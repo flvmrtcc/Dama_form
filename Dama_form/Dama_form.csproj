@@ -52,6 +52,8 @@
     <Compile Include="FormGioco.Designer.cs">
       <DependentUpon>FormGioco.cs</DependentUpon>
     </Compile>
+    <Compile Include="GiocoDama.cs" />
+    <Compile Include="K.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormGioco.resx">
