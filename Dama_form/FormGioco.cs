@@ -37,9 +37,10 @@ namespace Dama_form
 		{
 			panelTabella.Name = "panelTabella";
 			panelTabella.BackColor = Color.Gray;
-			panelTabella.Location = new System.Drawing.Point(10, 10);
-			panelTabella.Size = new System.Drawing.Size(565, 425);
+			panelTabella.Location = new System.Drawing.Point(5, 5);
+			panelTabella.Size = new System.Drawing.Size(565, 505);
 			panelTabella.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+			//panelTabella.Dock = DockStyle.Fill;
 			this.Controls.Add(panelTabella);
 		}
 		private void creaCelleGioco()
@@ -67,7 +68,7 @@ namespace Dama_form
 					coloreCella = !coloreCella;
 					elencoCelle[r, c].Location = new System.Drawing.Point(px, py);
 					elencoCelle[r, c].Size = new System.Drawing.Size(K.DIMENSIONECELLA, K.DIMENSIONECELLA);
-
+					elencoCelle[r, c].Anchor = AnchorStyles.Top;
 					this.panelTabella.Controls.Add(elencoCelle[r, c]);
 					px += K.DIMENSIONECELLA;
 				}

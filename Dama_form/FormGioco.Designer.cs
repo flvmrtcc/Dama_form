@@ -29,12 +29,14 @@ namespace Dama_form
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGioco));
 			this.titoloGioco = new System.Windows.Forms.TextBox();
 			this.bottoneGioca = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// titoloGioco
 			// 
+			this.titoloGioco.Anchor = System.Windows.Forms.AnchorStyles.Top;
 			this.titoloGioco.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
 			this.titoloGioco.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.titoloGioco.CausesValidation = false;
@@ -48,15 +50,16 @@ namespace Dama_form
 			this.titoloGioco.TabStop = false;
 			this.titoloGioco.Text = "DAMA";
 			this.titoloGioco.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.titoloGioco.WordWrap = false;
 			// 
 			// bottoneGioca
 			// 
 			this.bottoneGioca.Anchor = System.Windows.Forms.AnchorStyles.Top;
 			this.bottoneGioca.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.bottoneGioca.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.bottoneGioca.Location = new System.Drawing.Point(316, 231);
+			this.bottoneGioca.Location = new System.Drawing.Point(294, 244);
 			this.bottoneGioca.Name = "bottoneGioca";
-			this.bottoneGioca.Size = new System.Drawing.Size(162, 56);
+			this.bottoneGioca.Size = new System.Drawing.Size(200, 80);
 			this.bottoneGioca.TabIndex = 1;
 			this.bottoneGioca.Text = "GIOCA";
 			this.bottoneGioca.UseVisualStyleBackColor = true;
@@ -67,10 +70,11 @@ namespace Dama_form
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-			this.ClientSize = new System.Drawing.Size(782, 553);
+			this.ClientSize = new System.Drawing.Size(782, 653);
 			this.Controls.Add(this.bottoneGioca);
 			this.Controls.Add(this.titoloGioco);
-			this.MinimumSize = new System.Drawing.Size(800, 500);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.MinimumSize = new System.Drawing.Size(800, 600);
 			this.Name = "FormGioco";
 			this.Text = "Dama";
 			this.ResumeLayout(false);
