@@ -72,7 +72,7 @@ namespace Dama_form
 			this.Controls.Add(this.titoloGioco);
 			this.MinimumSize = new System.Drawing.Size(800, 500);
 			this.Name = "FormGioco";
-			this.Text = "Form1";
+			this.Text = "Dama";
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

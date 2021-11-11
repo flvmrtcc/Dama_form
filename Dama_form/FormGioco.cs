@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Martucci Flavio - 5INF3
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,6 +16,7 @@ namespace Dama_form
 	{
 		Panel panelTabella;
 		PanelCella[,] elencoCelle = new PanelCella[K.NUMEROCELLELATO, K.NUMEROCELLELATO];
+		PictureBoxPedina[,] imgBoxPedine = new PictureBoxPedina[K.NUMEROCELLELATO, K.NUMEROCELLELATO];
 		GiocoDama giocoDama;
 		public FormGioco()
 		{
@@ -30,7 +33,6 @@ namespace Dama_form
 			creaCelleGioco();
 			inserisciPedine();
 		}
-
 		private void creaTabellaGioco()
 		{
 			panelTabella.Name = "panelTabella";
@@ -42,7 +44,6 @@ namespace Dama_form
 		}
 		private void creaCelleGioco()
 		{
-			//elencoCelle = new PanelCella[8, 8];
 			int px = 10;
 			int py = 10;
 			bool coloreCella = false;
@@ -57,11 +58,11 @@ namespace Dama_form
 					elencoCelle[r, c].y = r;
 					if (coloreCella)
 					{
-						elencoCelle[r, c].BackColor = Color.FromArgb(205, 203, 160);
+						elencoCelle[r, c].BackColor = K.COLORE_CASELLE_BIANCHE;
 					}
 					else
 					{
-						elencoCelle[r, c].BackColor = Color.FromArgb(152, 118, 84);
+						elencoCelle[r, c].BackColor = K.COLORE_CASELLE_NERE;
 					}
 					coloreCella = !coloreCella;
 					elencoCelle[r, c].Location = new System.Drawing.Point(px, py);
@@ -77,40 +78,73 @@ namespace Dama_form
 
 		private void inserisciPedine()
 		{
-			PictureBox imgBoxTest;
 			int[,] matricePedine = giocoDama.getMatricePedine();
 			for (int r = 0; r < K.NUMEROCELLELATO; r++)
 			{
 				for (int c = 0; c < K.NUMEROCELLELATO; c++)
 				{
-					if (matricePedine[r, c] == 1)
+					if (matricePedine[r, c] == K.PEDINA_BIANCA || matricePedine[r, c] == K.PEDINA_NERA)
 					{
-						imgBoxTest = new PictureBox();
-						imgBoxTest.Image = Image.FromFile("pedinaDama1.png");
-						imgBoxTest.SizeMode = PictureBoxSizeMode.StretchImage;
-						imgBoxTest.ClientSize = new Size(K.DIMENSIONECELLA, K.DIMENSIONECELLA);
-						this.elencoCelle[r, c].Controls.Add(imgBoxTest);
-					}
-					else if (matricePedine[r, c] == 2)
-					{
-						imgBoxTest = new PictureBox();
-						imgBoxTest.Image = Image.FromFile("pedinaDama2.png");
-						imgBoxTest.SizeMode = PictureBoxSizeMode.StretchImage;
-						imgBoxTest.ClientSize = new Size(K.DIMENSIONECELLA, K.DIMENSIONECELLA);
-						this.elencoCelle[r, c].Controls.Add(imgBoxTest);
+						imgBoxPedine[r, c] = new PictureBoxPedina();
+						if (matricePedine[r, c] == K.PEDINA_BIANCA)
+						{
+							imgBoxPedine[r, c].Image = Image.FromFile("pedinaDama1.png");
+						}
+						else
+						{
+							imgBoxPedine[r, c].Image = Image.FromFile("pedinaDama2.png");
+						}
+						imgBoxPedine[r, c].SizeMode = PictureBoxSizeMode.StretchImage;
+						imgBoxPedine[r, c].ClientSize = new Size(K.DIMENSIONECELLA, K.DIMENSIONECELLA);
+						imgBoxPedine[r, c].Click += new System.EventHandler(this.mostraPossibiliMosse_Click);
+						imgBoxPedine[r, c].r = r; 
+						imgBoxPedine[r, c].c = c; 
+						this.elencoCelle[r, c].Controls.Add(imgBoxPedine[r, c]);
 					}
 				}
 			}
-
-
+		}
+		private void mostraPossibiliMosse_Click(object sender, EventArgs e)
+		{
+			rimuoviPrecedentiEvidenziati();
+			((PictureBoxPedina)sender).BackColor = K.COLORE_CASELLA_SELEZIONATA;
+			int r = ((PictureBoxPedina)sender).r;
+			int c = ((PictureBoxPedina)sender).c;
+			evidenziaPossibiliMosse(giocoDama.getMatriceCelleDaEvidenziare(r, c));
 		}
 
+		private void evidenziaPossibiliMosse(bool[,] matriceDaEvidenziare)
+		{
+			for (int r = 0; r < K.NUMEROCELLELATO; r++)
+			{
+				for (int c = 0; c < K.NUMEROCELLELATO; c++)
+				{
+					if (matriceDaEvidenziare[r, c]) elencoCelle[r, c].BackColor = K.COLORE_CASELLA_MOSSA_POSSIBILE;
+				}
+			}
+		}
 
+		private void rimuoviPrecedentiEvidenziati()
+		{
+			for (int r = 0; r < K.NUMEROCELLELATO; r++)
+			{
+				for (int c = 0; c < K.NUMEROCELLELATO; c++)
+				{
+					if (imgBoxPedine[r, c] != null) imgBoxPedine[r, c].BackColor = K.COLORE_CASELLE_NERE;
+					if (elencoCelle[r, c].BackColor == K.COLORE_CASELLA_MOSSA_POSSIBILE) elencoCelle[r, c].BackColor = K.COLORE_CASELLE_NERE;
+				}
+			}
+		}
 
+		private class PictureBoxPedina : PictureBox
+		{
+			public int r;
+			public int c;
+		}
 		private class PanelCella : Panel
 		{
-			public int x;
 			public int y;
+			public int x;
 		}
 	}
 

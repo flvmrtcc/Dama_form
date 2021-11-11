@@ -14,19 +14,86 @@ namespace Dama_form
 		{
 			matricePedine = new int[,]
 			{
-				{ 2, 0, 2, 0, 2, 0, 2, 0 },
-				{ 0, 2, 0, 2, 0, 2, 0, 2 },
-				{ 2, 0, 2, 0, 2, 0, 2, 0 },
+				{ K.PEDINA_NERA, 0, K.PEDINA_NERA, 0, K.PEDINA_NERA, 0, K.PEDINA_NERA, 0 },
+				{ 0, K.PEDINA_NERA, 0, K.PEDINA_NERA, 0, K.PEDINA_NERA, 0, K.PEDINA_NERA },
+				{ K.PEDINA_NERA, 0, K.PEDINA_NERA, 0, K.PEDINA_NERA, 0, K.PEDINA_NERA, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 1, 0, 1, 0, 1, 0, 1 },
-				{ 1, 0, 1, 0, 1, 0, 1, 0 },
-				{ 0, 1, 0, 1, 0, 1, 0, 1 }
+				{ 0, K.PEDINA_BIANCA, 0, K.PEDINA_BIANCA, 0, K.PEDINA_BIANCA, 0, K.PEDINA_BIANCA },
+				{ K.PEDINA_BIANCA, 0, K.PEDINA_BIANCA, 0, K.PEDINA_BIANCA, 0, K.PEDINA_BIANCA, 0 },
+				{ 0, K.PEDINA_BIANCA, 0, K.PEDINA_BIANCA, 0, K.PEDINA_BIANCA, 0, K.PEDINA_BIANCA }
 			};
 			giocoInCorso = false;
 
 
 		}
+
+		// Evidenzia le possibili mosse
+		public bool[,] getMatriceCelleDaEvidenziare(int r, int c)
+		{
+			bool[,] matriceCelleDaEvidenziare = new bool[K.NUMEROCELLELATO, K.NUMEROCELLELATO];
+			inizializzaMatriceCelleDaEvidenziare(matriceCelleDaEvidenziare);
+			if (matricePedine[r, c] == K.PEDINA_BIANCA)
+			{
+				controllaMosseVersoNord(r, c, matriceCelleDaEvidenziare);
+			}
+			else if (matricePedine[r, c] == K.PEDINA_NERA)
+			{
+				controllaMosseVersoSud(r, c, matriceCelleDaEvidenziare);
+			}
+			return matriceCelleDaEvidenziare;
+		}
+		private void inizializzaMatriceCelleDaEvidenziare(bool[,] matriceCelleDaEvidenziare)
+		{
+			for (int r = 0; r < K.NUMEROCELLELATO; r++)
+			{
+				for (int c = 0; c < K.NUMEROCELLELATO; c++)
+				{
+					matriceCelleDaEvidenziare[r, c] = false;
+				}
+			}
+		}
+		private void controllaMosseVersoNord(int r, int c, bool[,] matriceCelleDaEvidenziare)
+		{
+			if (r > 0)
+			{
+				if (c > 0)
+				{
+					if (matricePedine[r - 1, c - 1] == K.CELLA_VUOTA)
+					{
+						matriceCelleDaEvidenziare[r - 1, c - 1] = true;
+					}
+				}
+				if (c < K.NUMEROCELLELATO - 1)
+				{
+					if (matricePedine[r - 1, c + 1] == K.CELLA_VUOTA)
+					{
+						matriceCelleDaEvidenziare[r - 1, c + 1] = true;
+					}
+				}
+			}
+		}
+		private void controllaMosseVersoSud(int r, int c, bool[,] matriceCelleDaEvidenziare)
+		{
+			if (r < K.NUMEROCELLELATO - 1)
+			{
+				if (c > 0)
+				{
+					if (matricePedine[r + 1, c - 1] == K.CELLA_VUOTA)
+					{
+						matriceCelleDaEvidenziare[r + 1, c - 1] = true;
+					}
+				}
+				if (c < K.NUMEROCELLELATO - 1)
+				{
+					if (matricePedine[r + 1, c + 1] == K.CELLA_VUOTA)
+					{
+						matriceCelleDaEvidenziare[r + 1, c + 1] = true;
+					}
+				}
+			}
+		}
+
 
 		public int[,] getMatricePedine()
 		{
