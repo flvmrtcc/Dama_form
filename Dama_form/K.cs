@@ -11,6 +11,7 @@ namespace Dama_form
 	{
 		public static readonly int DIMENSIONECELLA = 60;
 		public static readonly int NUMEROCELLELATO = 8;
+		public static readonly int NUMERO_PEDINE_UTENTE = 12;
 		public static readonly Color COLORE_CASELLE_NERE = Color.FromArgb(152, 118, 84);
 		public static readonly Color COLORE_CASELLE_BIANCHE = Color.FromArgb(205, 203, 160);
 		public static readonly Color COLORE_CASELLA_SELEZIONATA = Color.Gray;

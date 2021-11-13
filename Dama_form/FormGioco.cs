@@ -16,7 +16,7 @@ namespace Dama_form
 	{
 		Panel panelTabella;
 		PanelCella[,] elencoCelle = new PanelCella[K.NUMEROCELLELATO, K.NUMEROCELLELATO];
-		PictureBoxPedina[,] imgBoxPedine = new PictureBoxPedina[K.NUMEROCELLELATO, K.NUMEROCELLELATO];
+		PictureBoxPedina[,] imgBoxPedine = new PictureBoxPedina[2, K.NUMERO_PEDINE_UTENTE];
 		GiocoDama giocoDama;
 		public FormGioco()
 		{
@@ -42,6 +42,7 @@ namespace Dama_form
 			panelTabella.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 			//panelTabella.Dock = DockStyle.Fill;
 			this.Controls.Add(panelTabella);
+			creaPedine();
 		}
 		private void creaCelleGioco()
 		{
@@ -76,9 +77,31 @@ namespace Dama_form
 				coloreCella = !coloreCella;
 			}
 		}
-
+		private void creaPedine()
+		{
+			for (int t = 0; t < 2; t++)
+			{
+				for (int c = 0; c < K.NUMERO_PEDINE_UTENTE; c++)
+				{
+					imgBoxPedine[t, c] = new PictureBoxPedina();
+					if (t == 1)
+					{
+						imgBoxPedine[t, c].Image = Image.FromFile("pedinaDama1.png");
+					}
+					else
+					{
+						imgBoxPedine[t, c].Image = Image.FromFile("pedinaDama2.png");
+					}
+					imgBoxPedine[t, c].SizeMode = PictureBoxSizeMode.StretchImage;
+					imgBoxPedine[t, c].ClientSize = new Size(K.DIMENSIONECELLA, K.DIMENSIONECELLA);
+					imgBoxPedine[t, c].Click += new System.EventHandler(this.mostraPossibiliMosse_Click);
+				}
+			}
+		}
 		private void inserisciPedine()
 		{
+			int t = 0;
+			int[] numPedineInserite = new int[] { 0, 0 };
 			int[,] matricePedine = giocoDama.getMatricePedine();
 			for (int r = 0; r < K.NUMEROCELLELATO; r++)
 			{
@@ -86,21 +109,12 @@ namespace Dama_form
 				{
 					if (matricePedine[r, c] == K.PEDINA_BIANCA || matricePedine[r, c] == K.PEDINA_NERA)
 					{
-						imgBoxPedine[r, c] = new PictureBoxPedina();
-						if (matricePedine[r, c] == K.PEDINA_BIANCA)
-						{
-							imgBoxPedine[r, c].Image = Image.FromFile("pedinaDama1.png");
-						}
-						else
-						{
-							imgBoxPedine[r, c].Image = Image.FromFile("pedinaDama2.png");
-						}
-						imgBoxPedine[r, c].SizeMode = PictureBoxSizeMode.StretchImage;
-						imgBoxPedine[r, c].ClientSize = new Size(K.DIMENSIONECELLA, K.DIMENSIONECELLA);
-						imgBoxPedine[r, c].Click += new System.EventHandler(this.mostraPossibiliMosse_Click);
-						imgBoxPedine[r, c].r = r; 
-						imgBoxPedine[r, c].c = c; 
-						this.elencoCelle[r, c].Controls.Add(imgBoxPedine[r, c]);
+						if (matricePedine[r, c] == K.PEDINA_BIANCA) t = 0;
+						else if (matricePedine[r, c] == K.PEDINA_NERA) t = 1;
+						imgBoxPedine[t, numPedineInserite[t]].r = r;
+						imgBoxPedine[t, numPedineInserite[t]].c = c;
+						this.elencoCelle[r, c].Controls.Add(imgBoxPedine[t, numPedineInserite[t]]);
+						numPedineInserite[t]++;
 					}
 				}
 			}
@@ -120,19 +134,57 @@ namespace Dama_form
 			{
 				for (int c = 0; c < K.NUMEROCELLELATO; c++)
 				{
-					if (matriceDaEvidenziare[r, c]) elencoCelle[r, c].BackColor = K.COLORE_CASELLA_MOSSA_POSSIBILE;
+					if (matriceDaEvidenziare[r, c])
+					{
+						elencoCelle[r, c].BackColor = K.COLORE_CASELLA_MOSSA_POSSIBILE;
+						elencoCelle[r, c].Click += new System.EventHandler(this.eseguiMossaScelta);
+					}
+				}
+			}
+		}
+
+		private void eseguiMossaScelta(object sender, EventArgs e)
+		{
+			giocoDama.eseguiMossa(((PanelCella)sender).y, (((PanelCella)sender).x));
+			aggiornaPedine();
+
+			//panelTabella.Controls.Clear();
+			//creaCelleGioco();
+			//inserisciPedine();
+		}
+
+		private void aggiornaPedine()
+		{
+			cancellaPedine();
+			rimuoviPrecedentiEvidenziati();
+			inserisciPedine();
+		}
+		private void cancellaPedine()
+		{
+			for (int r = 0; r < K.NUMEROCELLELATO; r++)
+			{
+				for (int c = 0; c < K.NUMEROCELLELATO; c++)
+				{
+					elencoCelle[r, c].Controls.Clear();
 				}
 			}
 		}
 
 		private void rimuoviPrecedentiEvidenziati()
 		{
+			for (int t = 0; t < 2; t++)
+			{
+				for (int c = 0; c < K.NUMERO_PEDINE_UTENTE; c++)
+				{ 
+					if (imgBoxPedine[t, c] != null) imgBoxPedine[t, c].BackColor = K.COLORE_CASELLE_NERE;
+				}
+			}
 			for (int r = 0; r < K.NUMEROCELLELATO; r++)
 			{
 				for (int c = 0; c < K.NUMEROCELLELATO; c++)
 				{
-					if (imgBoxPedine[r, c] != null) imgBoxPedine[r, c].BackColor = K.COLORE_CASELLE_NERE;
 					if (elencoCelle[r, c].BackColor == K.COLORE_CASELLA_MOSSA_POSSIBILE) elencoCelle[r, c].BackColor = K.COLORE_CASELLE_NERE;
+					elencoCelle[r, c].Click -= new System.EventHandler(this.eseguiMossaScelta);
 				}
 			}
 		}
