@@ -20,7 +20,7 @@ namespace Dama_form
 		TextBox textBoxTurnoGiocatore;
 
 		PanelCella[,] elencoCelle = new PanelCella[K.NUMERO_CELLE_LATO, K.NUMERO_CELLE_LATO];
-		PictureBoxPedina[,] imgBoxPedine = new PictureBoxPedina[2, K.NUMERO_PEDINE_UTENTE];
+		PictureBoxPedina[,] imgBoxPedine = new PictureBoxPedina[K.TIPI_PEDINE, K.NUMERO_PEDINE_UTENTE];
 		GiocoDama giocoDama;
 
 		public FormGioco()
@@ -97,7 +97,7 @@ namespace Dama_form
 		}
 		private void creaPedine()
 		{
-			for (int t = 0; t < 2; t++)
+			for (int t = 0; t < K.TIPI_PEDINE; t++)
 			{
 				for (int c = 0; c < K.NUMERO_PEDINE_UTENTE; c++)
 				{
@@ -107,10 +107,20 @@ namespace Dama_form
 						imgBoxPedine[t, c].Image = Image.FromFile("pedinaDama1.png");
 						imgBoxPedine[t, c].tipoPedina = K.PEDINA_BIANCA;
 					}
-					else
+					else if (t == 1)
 					{
 						imgBoxPedine[t, c].Image = Image.FromFile("pedinaDama2.png");
 						imgBoxPedine[t, c].tipoPedina = K.PEDINA_NERA;
+					}
+					else if (t == 2)
+					{
+						imgBoxPedine[t, c].Image = Image.FromFile("pedinaDama3.png");
+						imgBoxPedine[t, c].tipoPedina = K.DAMA_BIANCA;
+					}
+					else
+					{
+						imgBoxPedine[t, c].Image = Image.FromFile("pedinaDama4.png");
+						imgBoxPedine[t, c].tipoPedina = K.DAMA_NERA;
 					}
 					imgBoxPedine[t, c].SizeMode = PictureBoxSizeMode.StretchImage;
 					imgBoxPedine[t, c].ClientSize = new Size(K.DIMENSIONE_CELLA, K.DIMENSIONE_CELLA);
@@ -121,16 +131,18 @@ namespace Dama_form
 		private void inserisciPedine()
 		{
 			int t = 0;
-			int[] numPedineInserite = new int[] { 0, 0 };
+			int[] numPedineInserite = new int[] { 0, 0, 0, 0 };
 			int[,] matricePedine = giocoDama.getMatricePedine();
 			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
 			{
 				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
 				{
-					if (matricePedine[r, c] == K.PEDINA_BIANCA || matricePedine[r, c] == K.PEDINA_NERA)
+					if (matricePedine[r, c] == K.PEDINA_BIANCA || matricePedine[r, c] == K.PEDINA_NERA || matricePedine[r, c] == K.DAMA_BIANCA || matricePedine[r, c] == K.DAMA_NERA)
 					{
 						if (matricePedine[r, c] == K.PEDINA_BIANCA) t = 0;
 						else if (matricePedine[r, c] == K.PEDINA_NERA) t = 1;
+						else if (matricePedine[r, c] == K.DAMA_BIANCA) t = 2;
+						else if (matricePedine[r, c] == K.DAMA_NERA) t = 3;
 						imgBoxPedine[t, numPedineInserite[t]].r = r;
 						imgBoxPedine[t, numPedineInserite[t]].c = c;
 						this.elencoCelle[r, c].Controls.Add(imgBoxPedine[t, numPedineInserite[t]]);
@@ -142,7 +154,8 @@ namespace Dama_form
 		private void mostraPossibiliMosse_Click(object sender, EventArgs e)
 		{
 			rimuoviPrecedentiEvidenziati();
-			if (((PictureBoxPedina)sender).tipoPedina == giocoDama.getGiocatoreCorrente())
+			int tipoPedina = ((PictureBoxPedina)sender).tipoPedina;
+			if (tipoPedina == giocoDama.getGiocatoreCorrente() || tipoPedina - K.VAL_DIFFERENZA_DAME_PEDINE == giocoDama.getGiocatoreCorrente())
 			{
 				((PictureBoxPedina)sender).BackColor = K.COLORE_CASELLA_SELEZIONATA;
 				int r = ((PictureBoxPedina)sender).r;
@@ -171,6 +184,8 @@ namespace Dama_form
 			giocoDama.eseguiMossa(((PanelCella)sender).y, (((PanelCella)sender).x));
 			aggiornaPedine();
 			mostraTurnoCorrente();
+			if (giocoDama.getGiocoInCorso() == false)
+				textBoxTurnoGiocatore.Text = "Ha vinto il giocatore " + giocoDama.getVincitore();
 		}
 
 		private void creaBoxTurnoCorrente()
@@ -212,7 +227,7 @@ namespace Dama_form
 
 		private void rimuoviPrecedentiEvidenziati()
 		{
-			for (int t = 0; t < 2; t++)
+			for (int t = 0; t < K.TIPI_PEDINE; t++)
 			{
 				for (int c = 0; c < K.NUMERO_PEDINE_UTENTE; c++)
 				{
