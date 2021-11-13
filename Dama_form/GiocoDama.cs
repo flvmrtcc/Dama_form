@@ -12,6 +12,7 @@ namespace Dama_form
 		private bool giocoInCorso;
 		private int rSelezionata;
 		private int cSelezionata;
+		private int giocatoreCorrente;
 		public GiocoDama()
 		{
 			//matricePedine = new int[,]
@@ -37,7 +38,7 @@ namespace Dama_form
 				{ K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA }
 			};
 			giocoInCorso = false;
-
+			giocatoreCorrente = K.PEDINA_BIANCA;
 
 		}
 
@@ -46,7 +47,7 @@ namespace Dama_form
 		{
 			rSelezionata = r;
 			cSelezionata = c;
-			bool[,] matriceCelleDaEvidenziare = new bool[K.NUMEROCELLELATO, K.NUMEROCELLELATO];
+			bool[,] matriceCelleDaEvidenziare = new bool[K.NUMERO_CELLE_LATO, K.NUMERO_CELLE_LATO];
 			inizializzaMatriceCelleDaEvidenziare(matriceCelleDaEvidenziare);
 			if (matricePedine[r, c] == K.PEDINA_BIANCA)
 			{
@@ -60,9 +61,9 @@ namespace Dama_form
 		}
 		private void inizializzaMatriceCelleDaEvidenziare(bool[,] matriceCelleDaEvidenziare)
 		{
-			for (int r = 0; r < K.NUMEROCELLELATO; r++)
+			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
 			{
-				for (int c = 0; c < K.NUMEROCELLELATO; c++)
+				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
 				{
 					matriceCelleDaEvidenziare[r, c] = false;
 				}
@@ -88,13 +89,13 @@ namespace Dama_form
 
 					}
 				}
-				if (c + 1 < K.NUMEROCELLELATO)
+				if (c + 1 < K.NUMERO_CELLE_LATO)
 				{
 					if (matricePedine[r - 1, c + 1] == K.CELLA_VUOTA)
 					{
 						matriceCelleDaEvidenziare[r - 1, c + 1] = true;
 					}
-					else if (c + 2 < K.NUMEROCELLELATO && r - 2 >= 0)
+					else if (c + 2 < K.NUMERO_CELLE_LATO && r - 2 >= 0)
 					{
 						if (matricePedine[r - 1, c + 1] == giocatoreAvversario && matricePedine[r - 2, c + 2] == K.CELLA_VUOTA)
 							matriceCelleDaEvidenziare[r - 2, c + 2] = true;
@@ -107,7 +108,7 @@ namespace Dama_form
 			int giocatoreAvversario;
 			if (matricePedine[r, c] == K.PEDINA_BIANCA) giocatoreAvversario = K.PEDINA_NERA;
 			else giocatoreAvversario = K.PEDINA_BIANCA;
-			if (r + 1 < K.NUMEROCELLELATO)
+			if (r + 1 < K.NUMERO_CELLE_LATO)
 			{
 				if (c - 1 >= 0)
 				{
@@ -115,20 +116,20 @@ namespace Dama_form
 					{
 						matriceCelleDaEvidenziare[r + 1, c - 1] = true;
 					}
-					else if (r + 2 < K.NUMEROCELLELATO && c - 2 >= 0)
+					else if (r + 2 < K.NUMERO_CELLE_LATO && c - 2 >= 0)
 					{
 						if (matricePedine[r + 1, c - 1] == giocatoreAvversario && matricePedine[r + 2, c - 2] == K.CELLA_VUOTA)
 							matriceCelleDaEvidenziare[r + 2, c - 2] = true;
 					}
 
 				}
-				if (c + 1 < K.NUMEROCELLELATO)
+				if (c + 1 < K.NUMERO_CELLE_LATO)
 				{
 					if (matricePedine[r + 1, c + 1] == K.CELLA_VUOTA)
 					{
 						matriceCelleDaEvidenziare[r + 1, c + 1] = true;
 					}
-					else if (r + 2 < K.NUMEROCELLELATO && c + 2 < K.NUMEROCELLELATO)
+					else if (r + 2 < K.NUMERO_CELLE_LATO && c + 2 < K.NUMERO_CELLE_LATO)
 					{
 						if (matricePedine[r + 1, c + 1] == giocatoreAvversario && matricePedine[r + 2, c + 2] == K.CELLA_VUOTA)
 							matriceCelleDaEvidenziare[r + 2, c + 2] = true;
@@ -178,7 +179,14 @@ namespace Dama_form
 					}
 				}
 			}
+			cambiaGiocatoreCorrente();
 		}
+		private void cambiaGiocatoreCorrente()
+		{
+			if (giocatoreCorrente == K.PEDINA_BIANCA) giocatoreCorrente = K.PEDINA_NERA;
+			else giocatoreCorrente = K.PEDINA_BIANCA;
+		}
+
 		public int getRSelezionata()
 		{
 			return rSelezionata;
@@ -186,6 +194,10 @@ namespace Dama_form
 		public int getCSelezionata()
 		{
 			return cSelezionata;
+		}
+		public int getGiocatoreCorrente()
+		{
+			return giocatoreCorrente;
 		}
 		public int[,] getMatricePedine()
 		{

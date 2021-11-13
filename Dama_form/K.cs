@@ -9,8 +9,8 @@ namespace Dama_form
 {
 	public static class K
 	{
-		public static readonly int DIMENSIONECELLA = 60;
-		public static readonly int NUMEROCELLELATO = 8;
+		public static readonly int DIMENSIONE_CELLA = 60;
+		public static readonly int NUMERO_CELLE_LATO = 8;
 		public static readonly int NUMERO_PEDINE_UTENTE = 12;
 		public static readonly Color COLORE_CASELLE_NERE = Color.FromArgb(152, 118, 84);
 		public static readonly Color COLORE_CASELLE_BIANCHE = Color.FromArgb(205, 203, 160);

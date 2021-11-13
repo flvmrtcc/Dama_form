@@ -40,9 +40,10 @@ namespace Dama_form
 			this.titoloGioco.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
 			this.titoloGioco.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.titoloGioco.CausesValidation = false;
+			this.titoloGioco.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
 			this.titoloGioco.Cursor = System.Windows.Forms.Cursors.Default;
 			this.titoloGioco.Font = new System.Drawing.Font("Microsoft Sans Serif", 40F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.titoloGioco.Location = new System.Drawing.Point(260, 64);
+			this.titoloGioco.Location = new System.Drawing.Point(335, 64);
 			this.titoloGioco.Name = "titoloGioco";
 			this.titoloGioco.ReadOnly = true;
 			this.titoloGioco.Size = new System.Drawing.Size(265, 76);
@@ -57,7 +58,7 @@ namespace Dama_form
 			this.bottoneGioca.Anchor = System.Windows.Forms.AnchorStyles.Top;
 			this.bottoneGioca.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.bottoneGioca.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.bottoneGioca.Location = new System.Drawing.Point(294, 244);
+			this.bottoneGioca.Location = new System.Drawing.Point(369, 244);
 			this.bottoneGioca.Name = "bottoneGioca";
 			this.bottoneGioca.Size = new System.Drawing.Size(200, 80);
 			this.bottoneGioca.TabIndex = 1;
@@ -70,11 +71,11 @@ namespace Dama_form
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-			this.ClientSize = new System.Drawing.Size(782, 653);
+			this.ClientSize = new System.Drawing.Size(932, 653);
 			this.Controls.Add(this.bottoneGioca);
 			this.Controls.Add(this.titoloGioco);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.MinimumSize = new System.Drawing.Size(800, 600);
+			this.MinimumSize = new System.Drawing.Size(950, 700);
 			this.Name = "FormGioco";
 			this.Text = "Dama";
 			this.ResumeLayout(false);

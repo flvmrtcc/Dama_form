@@ -15,9 +15,14 @@ namespace Dama_form
 	public partial class FormGioco : Form
 	{
 		Panel panelTabella;
-		PanelCella[,] elencoCelle = new PanelCella[K.NUMEROCELLELATO, K.NUMEROCELLELATO];
+
+		Panel panelInfoPartita;
+		TextBox textBoxTurnoGiocatore;
+
+		PanelCella[,] elencoCelle = new PanelCella[K.NUMERO_CELLE_LATO, K.NUMERO_CELLE_LATO];
 		PictureBoxPedina[,] imgBoxPedine = new PictureBoxPedina[2, K.NUMERO_PEDINE_UTENTE];
 		GiocoDama giocoDama;
+
 		public FormGioco()
 		{
 			InitializeComponent();
@@ -27,32 +32,45 @@ namespace Dama_form
 		{
 			bottoneGioca.Visible = false;
 			titoloGioco.Visible = false;
-			panelTabella = new Panel();         // crea il panel che contiene la tabella di gioco
 			creaTabellaGioco();
-			this.panelTabella.Controls.Clear();
+			//this.panelTabella.Controls.Clear();
 			creaCelleGioco();
+			creaPedine();
 			inserisciPedine();
+			creaPanelInfoPartita();
+			creaBoxTurnoCorrente();
+			mostraTurnoCorrente();
 		}
 		private void creaTabellaGioco()
 		{
+			panelTabella = new Panel();         // crea il panel che contiene la tabella di gioco
 			panelTabella.Name = "panelTabella";
 			panelTabella.BackColor = Color.Gray;
 			panelTabella.Location = new System.Drawing.Point(5, 5);
-			panelTabella.Size = new System.Drawing.Size(565, 505);
+			panelTabella.Size = new System.Drawing.Size(504, 504);
 			panelTabella.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 			//panelTabella.Dock = DockStyle.Fill;
 			this.Controls.Add(panelTabella);
-			creaPedine();
+		}
+		private void creaPanelInfoPartita()
+		{
+			panelInfoPartita = new Panel();
+			panelInfoPartita.Name = "panelInfoParita";
+			panelInfoPartita.BackColor = Color.LightGray;
+			panelInfoPartita.Location = new System.Drawing.Point(515, 5);
+			panelInfoPartita.Size = new System.Drawing.Size(170, 504);
+			panelInfoPartita.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Right;
+			this.Controls.Add(panelInfoPartita);
 		}
 		private void creaCelleGioco()
 		{
 			int px = 10;
 			int py = 10;
 			bool coloreCella = false;
-			for (int r = 0; r < K.NUMEROCELLELATO; r++)
+			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
 			{
 				px = 10;
-				for (int c = 0; c < K.NUMEROCELLELATO; c++)
+				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
 				{
 					elencoCelle[r, c] = new PanelCella();
 					elencoCelle[r, c].Name = "panel" + r + "-" + c;
@@ -68,12 +86,12 @@ namespace Dama_form
 					}
 					coloreCella = !coloreCella;
 					elencoCelle[r, c].Location = new System.Drawing.Point(px, py);
-					elencoCelle[r, c].Size = new System.Drawing.Size(K.DIMENSIONECELLA, K.DIMENSIONECELLA);
+					elencoCelle[r, c].Size = new System.Drawing.Size(K.DIMENSIONE_CELLA, K.DIMENSIONE_CELLA);
 					elencoCelle[r, c].Anchor = AnchorStyles.Top;
 					this.panelTabella.Controls.Add(elencoCelle[r, c]);
-					px += K.DIMENSIONECELLA;
+					px += K.DIMENSIONE_CELLA;
 				}
-				py += K.DIMENSIONECELLA;
+				py += K.DIMENSIONE_CELLA;
 				coloreCella = !coloreCella;
 			}
 		}
@@ -84,16 +102,18 @@ namespace Dama_form
 				for (int c = 0; c < K.NUMERO_PEDINE_UTENTE; c++)
 				{
 					imgBoxPedine[t, c] = new PictureBoxPedina();
-					if (t == 1)
+					if (t == 0)
 					{
 						imgBoxPedine[t, c].Image = Image.FromFile("pedinaDama1.png");
+						imgBoxPedine[t, c].tipoPedina = K.PEDINA_BIANCA;
 					}
 					else
 					{
 						imgBoxPedine[t, c].Image = Image.FromFile("pedinaDama2.png");
+						imgBoxPedine[t, c].tipoPedina = K.PEDINA_NERA;
 					}
 					imgBoxPedine[t, c].SizeMode = PictureBoxSizeMode.StretchImage;
-					imgBoxPedine[t, c].ClientSize = new Size(K.DIMENSIONECELLA, K.DIMENSIONECELLA);
+					imgBoxPedine[t, c].ClientSize = new Size(K.DIMENSIONE_CELLA, K.DIMENSIONE_CELLA);
 					imgBoxPedine[t, c].Click += new System.EventHandler(this.mostraPossibiliMosse_Click);
 				}
 			}
@@ -103,9 +123,9 @@ namespace Dama_form
 			int t = 0;
 			int[] numPedineInserite = new int[] { 0, 0 };
 			int[,] matricePedine = giocoDama.getMatricePedine();
-			for (int r = 0; r < K.NUMEROCELLELATO; r++)
+			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
 			{
-				for (int c = 0; c < K.NUMEROCELLELATO; c++)
+				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
 				{
 					if (matricePedine[r, c] == K.PEDINA_BIANCA || matricePedine[r, c] == K.PEDINA_NERA)
 					{
@@ -122,17 +142,20 @@ namespace Dama_form
 		private void mostraPossibiliMosse_Click(object sender, EventArgs e)
 		{
 			rimuoviPrecedentiEvidenziati();
-			((PictureBoxPedina)sender).BackColor = K.COLORE_CASELLA_SELEZIONATA;
-			int r = ((PictureBoxPedina)sender).r;
-			int c = ((PictureBoxPedina)sender).c;
-			evidenziaPossibiliMosse(giocoDama.getMatriceCelleDaEvidenziare(r, c));
+			if (((PictureBoxPedina)sender).tipoPedina == giocoDama.getGiocatoreCorrente())
+			{
+				((PictureBoxPedina)sender).BackColor = K.COLORE_CASELLA_SELEZIONATA;
+				int r = ((PictureBoxPedina)sender).r;
+				int c = ((PictureBoxPedina)sender).c;
+				evidenziaPossibiliMosse(giocoDama.getMatriceCelleDaEvidenziare(r, c));
+			}
 		}
 
 		private void evidenziaPossibiliMosse(bool[,] matriceDaEvidenziare)
 		{
-			for (int r = 0; r < K.NUMEROCELLELATO; r++)
+			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
 			{
-				for (int c = 0; c < K.NUMEROCELLELATO; c++)
+				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
 				{
 					if (matriceDaEvidenziare[r, c])
 					{
@@ -147,10 +170,27 @@ namespace Dama_form
 		{
 			giocoDama.eseguiMossa(((PanelCella)sender).y, (((PanelCella)sender).x));
 			aggiornaPedine();
+			mostraTurnoCorrente();
+		}
 
-			//panelTabella.Controls.Clear();
-			//creaCelleGioco();
-			//inserisciPedine();
+		private void creaBoxTurnoCorrente()
+		{
+			textBoxTurnoGiocatore = new TextBox();
+			textBoxTurnoGiocatore.Name = "textInfo";
+			textBoxTurnoGiocatore.Dock = DockStyle.Top;
+			//textBoxTurnoGiocatore.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			textBoxTurnoGiocatore.BorderStyle = BorderStyle.FixedSingle;
+			textBoxTurnoGiocatore.ReadOnly = true;
+			textBoxTurnoGiocatore.Multiline = true;
+			textBoxTurnoGiocatore.WordWrap = true;
+			textBoxTurnoGiocatore.Height = 55;
+			textBoxTurnoGiocatore.TextAlign = HorizontalAlignment.Center;
+			textBoxTurnoGiocatore.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0))); ;
+			panelInfoPartita.Controls.Add(textBoxTurnoGiocatore);
+		}
+		private void mostraTurnoCorrente()
+		{
+			textBoxTurnoGiocatore.Text = "Turno del giocatore " + giocoDama.getGiocatoreCorrente();
 		}
 
 		private void aggiornaPedine()
@@ -161,9 +201,9 @@ namespace Dama_form
 		}
 		private void cancellaPedine()
 		{
-			for (int r = 0; r < K.NUMEROCELLELATO; r++)
+			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
 			{
-				for (int c = 0; c < K.NUMEROCELLELATO; c++)
+				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
 				{
 					elencoCelle[r, c].Controls.Clear();
 				}
@@ -175,13 +215,13 @@ namespace Dama_form
 			for (int t = 0; t < 2; t++)
 			{
 				for (int c = 0; c < K.NUMERO_PEDINE_UTENTE; c++)
-				{ 
+				{
 					if (imgBoxPedine[t, c] != null) imgBoxPedine[t, c].BackColor = K.COLORE_CASELLE_NERE;
 				}
 			}
-			for (int r = 0; r < K.NUMEROCELLELATO; r++)
+			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
 			{
-				for (int c = 0; c < K.NUMEROCELLELATO; c++)
+				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
 				{
 					if (elencoCelle[r, c].BackColor == K.COLORE_CASELLA_MOSSA_POSSIBILE) elencoCelle[r, c].BackColor = K.COLORE_CASELLE_NERE;
 					elencoCelle[r, c].Click -= new System.EventHandler(this.eseguiMossaScelta);
@@ -193,6 +233,7 @@ namespace Dama_form
 		{
 			public int r;
 			public int c;
+			public int tipoPedina;
 		}
 		private class PanelCella : Panel
 		{
