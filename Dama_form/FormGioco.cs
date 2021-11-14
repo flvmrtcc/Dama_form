@@ -44,6 +44,7 @@ namespace Dama_form
 			mostraTempoTrascorso();
 			Thread t = new Thread(new ThreadStart(ThreadProc));
 			t.Start();
+			tornaAlMenuToolStripMenuItem.Enabled = true;
 		}
 		public void ThreadProc()
 		{
@@ -58,7 +59,7 @@ namespace Dama_form
 			panelTabella = new Panel();         // crea il panel che contiene la tabella di gioco
 			panelTabella.Name = "panelTabella";
 			panelTabella.BackColor = K.COLORE_PANEL_TABELLA;
-			panelTabella.Location = new System.Drawing.Point(5, 5);
+			panelTabella.Location = new System.Drawing.Point(5, 30);
 			panelTabella.Size = new System.Drawing.Size(504, 504);
 			panelTabella.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 			//panelTabella.Dock = DockStyle.Fill;
@@ -69,7 +70,7 @@ namespace Dama_form
 			panelInfoPartita = new Panel();
 			panelInfoPartita.Name = "panelInfoParita";
 			panelInfoPartita.BackColor = Color.LightGray;
-			panelInfoPartita.Location = new System.Drawing.Point(515, 5);
+			panelInfoPartita.Location = new System.Drawing.Point(515, 30);
 			panelInfoPartita.Size = new System.Drawing.Size(170, 504);
 			panelInfoPartita.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Right;
 			this.Controls.Add(panelInfoPartita);
@@ -270,7 +271,7 @@ namespace Dama_form
 			rimuoviPrecedentiEvidenziati();
 			//inserisciPedine();
 
-			EsitoMossa esitoMossa = giocoDama.getEsitoMossa();				// legge l'esito della mossa e mostra le modifiche nel tabellone
+			EsitoMossa esitoMossa = giocoDama.getEsitoMossa();              // legge l'esito della mossa e mostra le modifiche nel tabellone
 			elencoCelle[esitoMossa.rNew, esitoMossa.cNew].pictureBoxPedina = elencoCelle[esitoMossa.rPrec, esitoMossa.cPrec].pictureBoxPedina;
 			elencoCelle[esitoMossa.rNew, esitoMossa.cNew].pictureBoxPedina.r = esitoMossa.rNew;
 			elencoCelle[esitoMossa.rNew, esitoMossa.cNew].pictureBoxPedina.c = esitoMossa.cNew;
@@ -329,6 +330,64 @@ namespace Dama_form
 			public int y;
 			public int x;
 			public PictureBoxPedina pictureBoxPedina;
+		}
+
+
+		// Finestra info dama
+		private void infoToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			string message = "Gioco Dama sviluppato in C# con l'utilizzo delle form. \n\nSviluppato da Martucci Flavio, studente della 5INF3." +
+				"\nAnno scolastico 2021/2022.";
+			string caption = "Informazioni su Dama";
+			var result = MessageBox.Show(message, caption,
+										 MessageBoxButtons.OK,
+										 MessageBoxIcon.Information);
+		}
+		// Finestra di dialogo torna al menu
+		private void tornaAlMenuToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			string message = "Sicuro di voler abbandonare la partita e tornare al menu principale?";
+			string caption = "Abbandonare la partita?";
+			var result = MessageBox.Show(message, caption,
+										 MessageBoxButtons.YesNo,
+										 MessageBoxIcon.Question);
+			if (result == DialogResult.Yes)
+			{
+				giocoDama.terminaPartita();
+				this.Controls.Remove(panelTabella);
+				this.Controls.Remove(panelInfoPartita);
+				bottoneGioca.Visible = true;
+				titoloGioco.Visible = true;
+				tornaAlMenuToolStripMenuItem.Enabled = false;
+			}
+		}
+		// Finestra di dialofo nuova partita
+		private void nuovaPartitaToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (giocoDama.getGiocoInCorso())
+			{
+				string message = "Sicuro di voler abbandonare la partita in corso per iniziarne una nuova?";
+				string caption = "Abbandonare la partita?";
+				var result = MessageBox.Show(message, caption,
+											 MessageBoxButtons.YesNo,
+											 MessageBoxIcon.Question);
+				if (result == DialogResult.Yes)
+				{
+					giocoDama.terminaPartita();
+					this.Controls.Remove(panelTabella);
+					this.Controls.Remove(panelInfoPartita);
+					tornaAlMenuToolStripMenuItem.Enabled = false;
+					bottoneGioca_Click(null, null);
+				}
+			}
+			else
+			{
+				giocoDama.terminaPartita();
+				this.Controls.Remove(panelTabella);
+				this.Controls.Remove(panelInfoPartita);
+				tornaAlMenuToolStripMenuItem.Enabled = false;
+				bottoneGioca_Click(null, null);
+			}
 		}
 	}
 

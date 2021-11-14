@@ -19,12 +19,22 @@ namespace Dama_form
 
 		private bool obbligoMangiare;
 
-		private EsitoMossa esitoMossa = new EsitoMossa();
+		private EsitoMossa esitoMossa;
 
 		private string tempoTrascorso;
-		Stopwatch stopWatch = new Stopwatch();
+		Stopwatch stopWatch;
 
 		public GiocoDama()
+		{
+			esitoMossa = new EsitoMossa();
+			stopWatch = new Stopwatch();
+			giocoInCorso = false;
+			obbligoMangiare = false;
+			vincitore = 0;
+			giocatoreCorrente = K.PEDINA_BIANCA;
+		}
+
+		public void iniziaPartita()
 		{
 			matricePedine = new int[,]
 			{
@@ -48,18 +58,11 @@ namespace Dama_form
 			//	{ K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA   },
 			//	{ K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA }
 			//};
-			giocoInCorso = false;
+			giocoInCorso = true;
 			obbligoMangiare = false;
 			vincitore = 0;
 			giocatoreCorrente = K.PEDINA_BIANCA;
-
-		}
-
-		public void iniziaPartita()
-		{
-			giocoInCorso = true;
-			tempoTrascorso = "";
-			stopWatch.Start();
+			stopWatch.Restart();
 		}
 
 
@@ -252,11 +255,16 @@ namespace Dama_form
 				controllaPossibileVittoria();
 				if (giocoInCorso && !seDisponibiliMosse())
 				{
-					giocoInCorso = false;
+					terminaPartita();
 					cambiaGiocatoreCorrente();
 					vincitore = giocatoreCorrente;
 				}
 			}
+		}
+		public void terminaPartita()
+		{
+			giocoInCorso = false;
+			stopWatch.Stop();
 		}
 
 		private void salvaPosizionePedinaMangiata(int rMangiata, int cMangiata)
@@ -292,7 +300,7 @@ namespace Dama_form
 			{
 				cambiaGiocatoreCorrente();
 				vincitore = giocatoreCorrente;
-				giocoInCorso = false;
+				terminaPartita();
 			}
 		}
 		private bool controllaSePedineRimanenti()
@@ -444,7 +452,7 @@ namespace Dama_form
 			tempoTrascorso = elapsedTime;
 			return tempoTrascorso;
 		}
-	
+
 	}
 
 	public class EsitoMossa
