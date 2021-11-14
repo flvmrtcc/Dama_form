@@ -138,6 +138,7 @@ namespace Dama_form
 			this.MinimumSize = new System.Drawing.Size(950, 700);
 			this.Name = "FormGioco";
 			this.Text = "Dama";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormGioco_FormClosing);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
 			this.ResumeLayout(false);

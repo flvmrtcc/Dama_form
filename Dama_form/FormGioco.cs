@@ -402,6 +402,26 @@ namespace Dama_form
 				bottoneGioca_Click(null, null);
 			}
 		}
+		// Finestra di conferma chiusura gioco
+		private void FormGioco_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			string message =
+				"Sei sicuro di voler chiudere il gioco?";
+			string caption = "Chiudere il gioco?";
+			var result = MessageBox.Show(message, caption,
+										 MessageBoxButtons.YesNo,
+										 MessageBoxIcon.Question);
+
+			if (result == DialogResult.No)
+			{
+				e.Cancel = true;// cancel the closure of the form.
+			}
+			else
+			{
+				giocoDama.terminaPartita();
+			}
+
+		}
 	}
 
 
