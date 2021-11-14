@@ -45,7 +45,7 @@ namespace Dama_form
 		{
 			panelTabella = new Panel();         // crea il panel che contiene la tabella di gioco
 			panelTabella.Name = "panelTabella";
-			panelTabella.BackColor = Color.Gray;
+			panelTabella.BackColor = K.COLORE_PANEL_TABELLA;
 			panelTabella.Location = new System.Drawing.Point(5, 5);
 			panelTabella.Size = new System.Drawing.Size(504, 504);
 			panelTabella.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
@@ -125,6 +125,8 @@ namespace Dama_form
 					imgBoxPedine[t, c].SizeMode = PictureBoxSizeMode.StretchImage;
 					imgBoxPedine[t, c].ClientSize = new Size(K.DIMENSIONE_CELLA, K.DIMENSIONE_CELLA);
 					imgBoxPedine[t, c].Click += new System.EventHandler(this.mostraPossibiliMosse_Click);
+					imgBoxPedine[t, c].Cursor = System.Windows.Forms.Cursors.Hand;
+					imgBoxPedine[t, c].MouseDown += new System.Windows.Forms.MouseEventHandler(this.pedinaMouseDown_Click);
 				}
 			}
 		}
@@ -174,9 +176,20 @@ namespace Dama_form
 					{
 						elencoCelle[r, c].BackColor = K.COLORE_CASELLA_MOSSA_POSSIBILE;
 						elencoCelle[r, c].Click += new System.EventHandler(this.eseguiMossaScelta);
+						elencoCelle[r, c].Cursor = System.Windows.Forms.Cursors.Hand;
+						elencoCelle[r, c].MouseDown += new System.Windows.Forms.MouseEventHandler(this.mossaPossibileMouseDown_Click);
 					}
 				}
 			}
+		}
+
+		private void pedinaMouseDown_Click(object sender, MouseEventArgs e)
+		{
+			((PictureBoxPedina)sender).BackColor = K.COLORE_CASELLA_CLICK_DOWN;
+		}
+		private void mossaPossibileMouseDown_Click(object sender, MouseEventArgs e)
+		{
+			((PanelCella)sender).BackColor = K.COLORE_CASELLA_SELEZIONATA_CLICK_DOWN;
 		}
 
 		private void eseguiMossaScelta(object sender, EventArgs e)
@@ -238,8 +251,13 @@ namespace Dama_form
 			{
 				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
 				{
-					if (elencoCelle[r, c].BackColor == K.COLORE_CASELLA_MOSSA_POSSIBILE) elencoCelle[r, c].BackColor = K.COLORE_CASELLE_NERE;
-					elencoCelle[r, c].Click -= new System.EventHandler(this.eseguiMossaScelta);
+					if (elencoCelle[r, c].BackColor == K.COLORE_CASELLA_MOSSA_POSSIBILE || elencoCelle[r, c].BackColor == K.COLORE_CASELLA_SELEZIONATA_CLICK_DOWN)
+					{
+						elencoCelle[r, c].BackColor = K.COLORE_CASELLE_NERE;
+						elencoCelle[r, c].Click -= new System.EventHandler(this.eseguiMossaScelta);
+						elencoCelle[r, c].Cursor = System.Windows.Forms.Cursors.Default;
+						elencoCelle[r, c].MouseDown -= new System.Windows.Forms.MouseEventHandler(this.mossaPossibileMouseDown_Click);
+					}
 				}
 			}
 		}

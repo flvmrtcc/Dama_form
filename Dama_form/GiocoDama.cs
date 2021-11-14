@@ -49,22 +49,25 @@ namespace Dama_form
 		// Evidenzia le possibili mosse
 		public bool[,] getMatriceCelleDaEvidenziare(int r, int c)
 		{
-			rSelezionata = r;
-			cSelezionata = c;
 			bool[,] matriceCelleDaEvidenziare = new bool[K.NUMERO_CELLE_LATO, K.NUMERO_CELLE_LATO];
-			inizializzaMatriceCelleDaEvidenziare(matriceCelleDaEvidenziare);
-			if (matricePedine[r, c] == K.PEDINA_BIANCA)
+			if (giocoInCorso)
 			{
-				controllaMosseVersoNord(r, c, matriceCelleDaEvidenziare);
-			}
-			else if (matricePedine[r, c] == K.PEDINA_NERA)
-			{
-				controllaMosseVersoSud(r, c, matriceCelleDaEvidenziare);
-			}
-			else if (matricePedine[r, c] == K.DAMA_BIANCA || matricePedine[r, c] == K.DAMA_NERA)
-			{
-				controllaMosseVersoNord(r, c, matriceCelleDaEvidenziare);
-				controllaMosseVersoSud(r, c, matriceCelleDaEvidenziare);
+				rSelezionata = r;
+				cSelezionata = c;
+				inizializzaMatriceCelleDaEvidenziare(matriceCelleDaEvidenziare);
+				if (matricePedine[r, c] == K.PEDINA_BIANCA)
+				{
+					controllaMosseVersoNord(r, c, matriceCelleDaEvidenziare);
+				}
+				else if (matricePedine[r, c] == K.PEDINA_NERA)
+				{
+					controllaMosseVersoSud(r, c, matriceCelleDaEvidenziare);
+				}
+				else if (matricePedine[r, c] == K.DAMA_BIANCA || matricePedine[r, c] == K.DAMA_NERA)
+				{
+					controllaMosseVersoNord(r, c, matriceCelleDaEvidenziare);
+					controllaMosseVersoSud(r, c, matriceCelleDaEvidenziare);
+				}
 			}
 			return matriceCelleDaEvidenziare;
 		}
@@ -193,6 +196,12 @@ namespace Dama_form
 				controllaPossibiliDame();
 				cambiaGiocatoreCorrente();
 				controllaPossibileVittoria();
+				if (giocoInCorso && controllaSeDisponibiliMosse() == false)
+				{
+					giocoInCorso = false;
+					cambiaGiocatoreCorrente();
+					vincitore = giocatoreCorrente;
+				}
 			}
 		}
 		private void cambiaGiocatoreCorrente()
@@ -218,6 +227,7 @@ namespace Dama_form
 		{
 			if (controllaSePedineRimanenti() == false)
 			{
+				cambiaGiocatoreCorrente();
 				vincitore = giocatoreCorrente;
 				giocoInCorso = false;
 			}
@@ -234,6 +244,103 @@ namespace Dama_form
 			return false;
 		}
 
+		// Controlla se sono disponibili ancora mosse per il giocatore corrente
+		private bool controllaSeDisponibiliMosse()
+		{
+			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
+			{
+				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
+				{
+					if (matricePedine[r, c] == giocatoreCorrente)
+					{
+						if (giocatoreCorrente == K.PEDINA_BIANCA)
+						{
+							if (controllaSePossibiliMosseVersoNord(r, c) == true) return true;
+						}
+						else if (giocatoreCorrente == K.PEDINA_NERA)
+						{
+							if (controllaSePossibiliMosseVersoSud(r, c) == true) return true;
+						}
+					}
+					else if (matricePedine[r, c] - K.VAL_DIFFERENZA_DAME_PEDINE == giocatoreCorrente)
+					{
+						if (controllaSePossibiliMosseVersoNord(r, c) == true) return true;
+						if (controllaSePossibiliMosseVersoSud(r, c) == true) return true;
+					}
+				}
+			}
+			return false;
+		}
+		private bool controllaSePossibiliMosseVersoNord(int r, int c)
+		{
+			int giocatoreAvversario;
+			if (matricePedine[r, c] == K.PEDINA_BIANCA || matricePedine[r, c] == K.DAMA_BIANCA) giocatoreAvversario = K.PEDINA_NERA;
+			else giocatoreAvversario = K.PEDINA_BIANCA;
+			if (r - 1 >= 0)
+			{
+				if (c - 1 >= 0)
+				{
+					if (matricePedine[r - 1, c - 1] == K.CELLA_VUOTA)
+					{
+						return true;
+					}
+					else if (c - 2 >= 0 && r - 2 >= 0)
+					{
+						if ((matricePedine[r - 1, c - 1] == giocatoreAvversario || matricePedine[r - 1, c - 1] - K.VAL_DIFFERENZA_DAME_PEDINE == giocatoreAvversario) && matricePedine[r - 2, c - 2] == K.CELLA_VUOTA)
+							return true;
+
+					}
+				}
+				if (c + 1 < K.NUMERO_CELLE_LATO)
+				{
+					if (matricePedine[r - 1, c + 1] == K.CELLA_VUOTA)
+					{
+						return true;
+					}
+					else if (c + 2 < K.NUMERO_CELLE_LATO && r - 2 >= 0)
+					{
+						if ((matricePedine[r - 1, c + 1] == giocatoreAvversario || matricePedine[r - 1, c + 1] - K.VAL_DIFFERENZA_DAME_PEDINE == giocatoreAvversario) && matricePedine[r - 2, c + 2] == K.CELLA_VUOTA)
+							return true;
+					}
+				}
+			}
+			return false;
+		}
+		private bool controllaSePossibiliMosseVersoSud(int r, int c)
+		{
+			int giocatoreAvversario;
+			if (matricePedine[r, c] == K.PEDINA_BIANCA || matricePedine[r, c] == K.DAMA_BIANCA) giocatoreAvversario = K.PEDINA_NERA;
+			else giocatoreAvversario = K.PEDINA_BIANCA;
+			if (r + 1 < K.NUMERO_CELLE_LATO)
+			{
+				if (c - 1 >= 0)
+				{
+					if (matricePedine[r + 1, c - 1] == K.CELLA_VUOTA)
+					{
+						return true;
+					}
+					else if (r + 2 < K.NUMERO_CELLE_LATO && c - 2 >= 0)
+					{
+						if ((matricePedine[r + 1, c - 1] == giocatoreAvversario || matricePedine[r + 1, c - 1] - K.VAL_DIFFERENZA_DAME_PEDINE == giocatoreAvversario) && matricePedine[r + 2, c - 2] == K.CELLA_VUOTA)
+							return true;
+					}
+
+				}
+				if (c + 1 < K.NUMERO_CELLE_LATO)
+				{
+					if (matricePedine[r + 1, c + 1] == K.CELLA_VUOTA)
+					{
+						return true;
+					}
+					else if (r + 2 < K.NUMERO_CELLE_LATO && c + 2 < K.NUMERO_CELLE_LATO)
+					{
+						if ((matricePedine[r + 1, c + 1] == giocatoreAvversario || matricePedine[r + 1, c + 1] - K.VAL_DIFFERENZA_DAME_PEDINE == giocatoreAvversario) && matricePedine[r + 2, c + 2] == K.CELLA_VUOTA)
+							return true;
+					}
+				}
+			}
+			return false;
+		}
 
 		// Metodi get
 		public int getRSelezionata()
