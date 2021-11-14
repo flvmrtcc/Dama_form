@@ -16,6 +16,8 @@ namespace Dama_form
 		private int giocatoreCorrente;
 		private int vincitore;
 
+		private bool obbligoMangiare;
+
 		public GiocoDama()
 		{
 			//matricePedine = new int[,]
@@ -41,6 +43,7 @@ namespace Dama_form
 				{ K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA }
 			};
 			giocoInCorso = true;
+			obbligoMangiare = false;
 			vincitore = 0;
 			giocatoreCorrente = K.PEDINA_BIANCA;
 
@@ -90,7 +93,7 @@ namespace Dama_form
 			{
 				if (c - 1 >= 0)
 				{
-					if (matricePedine[r - 1, c - 1] == K.CELLA_VUOTA)
+					if (matricePedine[r - 1, c - 1] == K.CELLA_VUOTA && !obbligoMangiare)
 					{
 						matriceCelleDaEvidenziare[r - 1, c - 1] = true;
 					}
@@ -98,12 +101,11 @@ namespace Dama_form
 					{
 						if ((matricePedine[r - 1, c - 1] == giocatoreAvversario || matricePedine[r - 1, c - 1] - K.VAL_DIFFERENZA_DAME_PEDINE == giocatoreAvversario) && matricePedine[r - 2, c - 2] == K.CELLA_VUOTA)
 							matriceCelleDaEvidenziare[r - 2, c - 2] = true;
-
 					}
 				}
 				if (c + 1 < K.NUMERO_CELLE_LATO)
 				{
-					if (matricePedine[r - 1, c + 1] == K.CELLA_VUOTA)
+					if (matricePedine[r - 1, c + 1] == K.CELLA_VUOTA && !obbligoMangiare)
 					{
 						matriceCelleDaEvidenziare[r - 1, c + 1] = true;
 					}
@@ -124,7 +126,7 @@ namespace Dama_form
 			{
 				if (c - 1 >= 0)
 				{
-					if (matricePedine[r + 1, c - 1] == K.CELLA_VUOTA)
+					if (matricePedine[r + 1, c - 1] == K.CELLA_VUOTA && !obbligoMangiare)
 					{
 						matriceCelleDaEvidenziare[r + 1, c - 1] = true;
 					}
@@ -137,7 +139,7 @@ namespace Dama_form
 				}
 				if (c + 1 < K.NUMERO_CELLE_LATO)
 				{
-					if (matricePedine[r + 1, c + 1] == K.CELLA_VUOTA)
+					if (matricePedine[r + 1, c + 1] == K.CELLA_VUOTA && !obbligoMangiare)
 					{
 						matriceCelleDaEvidenziare[r + 1, c + 1] = true;
 					}
@@ -148,6 +150,38 @@ namespace Dama_form
 					}
 				}
 			}
+		}
+
+		// Controlla se il giocatore puo mangiare
+		private bool seGiocatoreDeveMangiare()
+		{
+			bool[,] matriceMosse;
+			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
+			{
+				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
+				{
+					if (matricePedine[r, c] == giocatoreCorrente || matricePedine[r, c] - K.VAL_DIFFERENZA_DAME_PEDINE == giocatoreCorrente)
+					{
+						matriceMosse = getMatriceCelleDaEvidenziare(r, c);
+						if (controllaSePuoMangiare(r, c, matriceMosse)) return true;
+					}
+				}
+			}
+			return false;
+		}
+		private bool controllaSePuoMangiare(int r, int c, bool[,] matriceCelleDaEvidenziare)
+		{
+			for (int r0 = 0; r0 < K.NUMERO_CELLE_LATO; r0++)
+			{
+				for (int c0 = 0; c0 < K.NUMERO_CELLE_LATO; c0++)
+				{
+					if (matriceCelleDaEvidenziare[r0, c0])
+					{
+						if (Math.Abs(r0 - r) == 2 && Math.Abs(c0 - c) == 2) return true;
+					}
+				}
+			}
+			return false;
 		}
 
 		// Esegui mossa scelta
@@ -208,6 +242,8 @@ namespace Dama_form
 		{
 			if (giocatoreCorrente == K.PEDINA_BIANCA) giocatoreCorrente = K.PEDINA_NERA;
 			else giocatoreCorrente = K.PEDINA_BIANCA;
+			obbligoMangiare = false;
+			obbligoMangiare = seGiocatoreDeveMangiare();
 		}
 
 		// Controlla se una pedina deve diventare dama
