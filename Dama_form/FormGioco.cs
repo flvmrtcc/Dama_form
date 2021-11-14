@@ -283,6 +283,19 @@ namespace Dama_form
 				elencoCelle[esitoMossa.rMangiata, esitoMossa.cMangiata].Controls.Clear();
 				elencoCelle[esitoMossa.rMangiata, esitoMossa.cMangiata].pictureBoxPedina = null;
 			}
+			if (esitoMossa.seNuovaDama)
+			{
+				if (esitoMossa.giocatore == K.PEDINA_BIANCA)
+				{
+					elencoCelle[esitoMossa.rNew, esitoMossa.cNew].pictureBoxPedina.Image = K.IMG_DAMA_BIANCA;
+					elencoCelle[esitoMossa.rNew, esitoMossa.cNew].pictureBoxPedina.tipoPedina = K.DAMA_BIANCA;
+				}
+				else
+				{
+					elencoCelle[esitoMossa.rNew, esitoMossa.cNew].pictureBoxPedina.Image = K.IMG_DAMA_NERA;
+					elencoCelle[esitoMossa.rNew, esitoMossa.cNew].pictureBoxPedina.tipoPedina = K.DAMA_NERA;
+				}
+			}
 		}
 		private void cancellaPedine()
 		{

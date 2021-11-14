@@ -203,6 +203,7 @@ namespace Dama_form
 		{
 			if (giocoInCorso)
 			{
+				esitoMossa.giocatore = giocatoreCorrente;
 				esitoMossa.rPrec = rSelezionata;
 				esitoMossa.cPrec = cSelezionata;
 				esitoMossa.rNew = r;
@@ -284,12 +285,17 @@ namespace Dama_form
 		// Controlla se una pedina deve diventare dama
 		private void controllaPossibiliDame()
 		{
+			esitoMossa.seNuovaDama = false;
 			int r;
 			if (giocatoreCorrente == K.PEDINA_BIANCA) r = 0;
 			else r = K.NUMERO_CELLE_LATO - 1;
 			for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
 			{
-				if (matricePedine[r, c] == giocatoreCorrente) matricePedine[r, c] += K.VAL_DIFFERENZA_DAME_PEDINE;
+				if (matricePedine[r, c] == giocatoreCorrente)
+				{
+					matricePedine[r, c] += K.VAL_DIFFERENZA_DAME_PEDINE;
+					esitoMossa.seNuovaDama = true;
+				}
 			}
 		}
 
@@ -457,6 +463,7 @@ namespace Dama_form
 
 	public class EsitoMossa
 	{
+		public int giocatore;
 		public int rPrec;
 		public int cPrec;
 		public int rNew;
@@ -464,6 +471,7 @@ namespace Dama_form
 		public int rMangiata;
 		public int cMangiata;
 		public bool seMangiata;
+		public bool seNuovaDama;
 	}
 
 }
