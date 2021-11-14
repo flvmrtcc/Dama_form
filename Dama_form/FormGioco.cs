@@ -34,7 +34,6 @@ namespace Dama_form
 			titoloGioco.Visible = false;
 			giocoDama.iniziaPartita();
 			creaTabellaGioco();
-			//this.panelTabella.Controls.Clear();
 			creaCelleGioco();
 			creaPedine();
 			inserisciPedine();
@@ -216,7 +215,6 @@ namespace Dama_form
 			textBoxTurnoGiocatore = new TextBox();
 			textBoxTurnoGiocatore.Name = "textInfo";
 			textBoxTurnoGiocatore.Dock = DockStyle.Top;
-			//textBoxTurnoGiocatore.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			textBoxTurnoGiocatore.BorderStyle = BorderStyle.FixedSingle;
 			textBoxTurnoGiocatore.ReadOnly = true;
 			textBoxTurnoGiocatore.Multiline = true;
@@ -237,15 +235,18 @@ namespace Dama_form
 			rimuoviPrecedentiEvidenziati();
 			//inserisciPedine();
 
-			EsitoMossa esitoMossa = giocoDama.getEsitoMossa();
+			EsitoMossa esitoMossa = giocoDama.getEsitoMossa();				// legge l'esito della mossa e mostra le modifiche nel tabellone
 			elencoCelle[esitoMossa.rNew, esitoMossa.cNew].pictureBoxPedina = elencoCelle[esitoMossa.rPrec, esitoMossa.cPrec].pictureBoxPedina;
 			elencoCelle[esitoMossa.rNew, esitoMossa.cNew].pictureBoxPedina.r = esitoMossa.rNew;
 			elencoCelle[esitoMossa.rNew, esitoMossa.cNew].pictureBoxPedina.c = esitoMossa.cNew;
 			elencoCelle[esitoMossa.rNew, esitoMossa.cNew].Controls.Add(elencoCelle[esitoMossa.rNew, esitoMossa.cNew].pictureBoxPedina);
 			elencoCelle[esitoMossa.rPrec, esitoMossa.cPrec].Controls.Clear();
 			elencoCelle[esitoMossa.rPrec, esitoMossa.cPrec].pictureBoxPedina = null;
-			elencoCelle[esitoMossa.rMangiata, esitoMossa.cMangiata].Controls.Clear();
-			elencoCelle[esitoMossa.rMangiata, esitoMossa.cMangiata].pictureBoxPedina = null;
+			if (esitoMossa.seMangiata)
+			{
+				elencoCelle[esitoMossa.rMangiata, esitoMossa.cMangiata].Controls.Clear();
+				elencoCelle[esitoMossa.rMangiata, esitoMossa.cMangiata].pictureBoxPedina = null;
+			}
 		}
 		private void cancellaPedine()
 		{
@@ -287,7 +288,6 @@ namespace Dama_form
 			public int r;
 			public int c;
 			public int tipoPedina;
-			public int idPedina;
 		}
 		private class PanelCella : Panel
 		{
