@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,9 @@ namespace Dama_form
 		private bool obbligoMangiare;
 
 		private EsitoMossa esitoMossa = new EsitoMossa();
+
+		private string tempoTrascorso;
+		Stopwatch stopWatch = new Stopwatch();
 
 		public GiocoDama()
 		{
@@ -54,7 +58,10 @@ namespace Dama_form
 		public void iniziaPartita()
 		{
 			giocoInCorso = true;
+			tempoTrascorso = "";
+			stopWatch.Start();
 		}
+
 
 		// Evidenzia le possibili mosse
 		public bool[,] getMatriceCelleDaEvidenziare(int r, int c)
@@ -251,6 +258,7 @@ namespace Dama_form
 				}
 			}
 		}
+
 		private void salvaPosizionePedinaMangiata(int rMangiata, int cMangiata)
 		{
 			esitoMossa.seMangiata = true;
@@ -428,7 +436,15 @@ namespace Dama_form
 		{
 			return esitoMossa;
 		}
-		
+		public string getTempoTrascorso()
+		{
+			TimeSpan ts = stopWatch.Elapsed;
+			string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}",
+					ts.Hours, ts.Minutes, ts.Seconds);
+			tempoTrascorso = elapsedTime;
+			return tempoTrascorso;
+		}
+	
 	}
 
 	public class EsitoMossa

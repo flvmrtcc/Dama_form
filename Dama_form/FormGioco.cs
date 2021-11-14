@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -18,6 +19,7 @@ namespace Dama_form
 
 		Panel panelInfoPartita;
 		TextBox textBoxTurnoGiocatore;
+		TextBox textBoxTempoTrascorso;
 
 		PanelCella[,] elencoCelle = new PanelCella[K.NUMERO_CELLE_LATO, K.NUMERO_CELLE_LATO];
 		PictureBoxPedina[,] imgBoxPedine = new PictureBoxPedina[K.NUM_GIOCATORI, K.NUMERO_PEDINE_UTENTE];
@@ -38,8 +40,18 @@ namespace Dama_form
 			creaPedine();
 			inserisciPedine();
 			creaPanelInfoPartita();
-			creaBoxTurnoCorrente();
 			mostraTurnoCorrente();
+			mostraTempoTrascorso();
+			Thread t = new Thread(new ThreadStart(ThreadProc));
+			t.Start();
+		}
+		public void ThreadProc()
+		{
+			while (giocoDama.getGiocoInCorso())
+			{
+				mostraTempoTrascorso();
+				Thread.Sleep(1000);
+			}
 		}
 		private void creaTabellaGioco()
 		{
@@ -61,6 +73,8 @@ namespace Dama_form
 			panelInfoPartita.Size = new System.Drawing.Size(170, 504);
 			panelInfoPartita.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Right;
 			this.Controls.Add(panelInfoPartita);
+			creaBoxTempoTrascorso();
+			creaBoxTurnoCorrente();
 		}
 		private void creaCelleGioco()
 		{
@@ -210,6 +224,7 @@ namespace Dama_form
 				textBoxTurnoGiocatore.Text = "Ha vinto il giocatore " + giocoDama.getVincitore();
 		}
 
+		// Box info
 		private void creaBoxTurnoCorrente()
 		{
 			textBoxTurnoGiocatore = new TextBox();
@@ -228,7 +243,27 @@ namespace Dama_form
 		{
 			textBoxTurnoGiocatore.Text = "Turno del giocatore " + giocoDama.getGiocatoreCorrente();
 		}
+		private void creaBoxTempoTrascorso()
+		{
+			textBoxTempoTrascorso = new TextBox();
+			textBoxTempoTrascorso.Name = "textInfoTempoTrascorso";
+			textBoxTempoTrascorso.Dock = DockStyle.Top;
+			textBoxTempoTrascorso.BorderStyle = BorderStyle.FixedSingle;
+			textBoxTempoTrascorso.ReadOnly = true;
+			textBoxTempoTrascorso.Multiline = true;
+			textBoxTempoTrascorso.WordWrap = true;
+			textBoxTempoTrascorso.Height = 85;
+			textBoxTempoTrascorso.TextAlign = HorizontalAlignment.Center;
+			textBoxTempoTrascorso.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0))); ;
+			panelInfoPartita.Controls.Add(textBoxTempoTrascorso);
+		}
+		private void mostraTempoTrascorso()
+		{
+			CheckForIllegalCrossThreadCalls = false;
+			textBoxTempoTrascorso.Text = "Tempo trascorso: " + giocoDama.getTempoTrascorso();
+		}
 
+		// Aggiorna pedine dopo la mossa
 		private void aggiornaPedine()
 		{
 			//cancellaPedine();
