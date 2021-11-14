@@ -18,6 +18,8 @@ namespace Dama_form
 
 		private bool obbligoMangiare;
 
+		private EsitoMossa esitoMossa = new EsitoMossa();
+
 		public GiocoDama()
 		{
 			//matricePedine = new int[,]
@@ -42,11 +44,16 @@ namespace Dama_form
 				{ K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA   },
 				{ K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA }
 			};
-			giocoInCorso = true;
+			giocoInCorso = false;
 			obbligoMangiare = false;
 			vincitore = 0;
 			giocatoreCorrente = K.PEDINA_BIANCA;
 
+		}
+
+		internal void iniziaPartita()
+		{
+			giocoInCorso = true;
 		}
 
 		// Evidenzia le possibili mosse
@@ -78,10 +85,7 @@ namespace Dama_form
 		{
 			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
 			{
-				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
-				{
-					matriceCelleDaEvidenziare[r, c] = false;
-				}
+				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++) matriceCelleDaEvidenziare[r, c] = false;
 			}
 		}
 		private void controllaMosseVersoNord(int r, int c, bool[,] matriceCelleDaEvidenziare)
@@ -189,10 +193,15 @@ namespace Dama_form
 		{
 			if (giocoInCorso)
 			{
+				esitoMossa.rPrec = rSelezionata;
+				esitoMossa.cPrec = cSelezionata;
+				esitoMossa.rNew = r;
+				esitoMossa.cNew = c;
 				if (Math.Abs(rSelezionata - r) == 1 && Math.Abs(cSelezionata - c) == 1)
 				{
 					matricePedine[r, c] = matricePedine[rSelezionata, cSelezionata];
 					matricePedine[rSelezionata, cSelezionata] = K.CELLA_VUOTA;
+					esitoMossa.seMangiata = false;
 				}
 				else
 				{
@@ -203,12 +212,14 @@ namespace Dama_form
 							matricePedine[rSelezionata - 2, cSelezionata - 2] = matricePedine[rSelezionata, cSelezionata];
 							matricePedine[rSelezionata - 1, cSelezionata - 1] = K.CELLA_VUOTA;
 							matricePedine[rSelezionata, cSelezionata] = K.CELLA_VUOTA;
+							salvaPosizionePedinaMangiata(rSelezionata - 1, cSelezionata - 1);
 						}
 						else
 						{
 							matricePedine[rSelezionata - 2, cSelezionata + 2] = matricePedine[rSelezionata, cSelezionata];
 							matricePedine[rSelezionata - 1, cSelezionata + 1] = K.CELLA_VUOTA;
 							matricePedine[rSelezionata, cSelezionata] = K.CELLA_VUOTA;
+							salvaPosizionePedinaMangiata(rSelezionata - 1, cSelezionata + 1);
 						}
 					}
 					else
@@ -218,25 +229,33 @@ namespace Dama_form
 							matricePedine[rSelezionata + 2, cSelezionata - 2] = matricePedine[rSelezionata, cSelezionata];
 							matricePedine[rSelezionata + 1, cSelezionata - 1] = K.CELLA_VUOTA;
 							matricePedine[rSelezionata, cSelezionata] = K.CELLA_VUOTA;
+							salvaPosizionePedinaMangiata(rSelezionata + 1, cSelezionata - 1);
 						}
 						else
 						{
 							matricePedine[rSelezionata + 2, cSelezionata + 2] = matricePedine[rSelezionata, cSelezionata];
 							matricePedine[rSelezionata + 1, cSelezionata + 1] = K.CELLA_VUOTA;
 							matricePedine[rSelezionata, cSelezionata] = K.CELLA_VUOTA;
+							salvaPosizionePedinaMangiata(rSelezionata + 1, cSelezionata + 1);
 						}
 					}
 				}
 				controllaPossibiliDame();
 				cambiaGiocatoreCorrente();
 				controllaPossibileVittoria();
-				if (giocoInCorso && controllaSeDisponibiliMosse() == false)
+				if (giocoInCorso && !seDisponibiliMosse())
 				{
 					giocoInCorso = false;
 					cambiaGiocatoreCorrente();
 					vincitore = giocatoreCorrente;
 				}
 			}
+		}
+		private void salvaPosizionePedinaMangiata(int rMangiata, int cMangiata)
+		{
+			esitoMossa.seMangiata = true;
+			esitoMossa.rMangiata = rMangiata;
+			esitoMossa.cMangiata = cMangiata;
 		}
 		private void cambiaGiocatoreCorrente()
 		{
@@ -281,7 +300,7 @@ namespace Dama_form
 		}
 
 		// Controlla se sono disponibili ancora mosse per il giocatore corrente
-		private bool controllaSeDisponibiliMosse()
+		private bool seDisponibiliMosse()
 		{
 			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
 			{
@@ -405,5 +424,22 @@ namespace Dama_form
 			return vincitore;
 		}
 
+		public EsitoMossa getEsitoMossa()
+		{
+			return esitoMossa;
+		}
+		
 	}
+
+	public class EsitoMossa
+	{
+		public int rPrec;
+		public int cPrec;
+		public int rNew;
+		public int cNew;
+		public int rMangiata;
+		public int cMangiata;
+		public bool seMangiata;
+	}
+
 }

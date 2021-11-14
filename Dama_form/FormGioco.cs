@@ -20,7 +20,7 @@ namespace Dama_form
 		TextBox textBoxTurnoGiocatore;
 
 		PanelCella[,] elencoCelle = new PanelCella[K.NUMERO_CELLE_LATO, K.NUMERO_CELLE_LATO];
-		PictureBoxPedina[,] imgBoxPedine = new PictureBoxPedina[K.TIPI_PEDINE, K.NUMERO_PEDINE_UTENTE];
+		PictureBoxPedina[,] imgBoxPedine = new PictureBoxPedina[K.NUM_GIOCATORI, K.NUMERO_PEDINE_UTENTE];
 		GiocoDama giocoDama;
 
 		public FormGioco()
@@ -32,6 +32,7 @@ namespace Dama_form
 		{
 			bottoneGioca.Visible = false;
 			titoloGioco.Visible = false;
+			giocoDama.iniziaPartita();
 			creaTabellaGioco();
 			//this.panelTabella.Controls.Clear();
 			creaCelleGioco();
@@ -97,31 +98,11 @@ namespace Dama_form
 		}
 		private void creaPedine()
 		{
-			for (int t = 0; t < K.TIPI_PEDINE; t++)
+			for (int t = 0; t < K.NUM_GIOCATORI; t++)
 			{
 				for (int c = 0; c < K.NUMERO_PEDINE_UTENTE; c++)
 				{
 					imgBoxPedine[t, c] = new PictureBoxPedina();
-					if (t == 0)
-					{
-						imgBoxPedine[t, c].Image = Image.FromFile("pedinaDama1.png");
-						imgBoxPedine[t, c].tipoPedina = K.PEDINA_BIANCA;
-					}
-					else if (t == 1)
-					{
-						imgBoxPedine[t, c].Image = Image.FromFile("pedinaDama2.png");
-						imgBoxPedine[t, c].tipoPedina = K.PEDINA_NERA;
-					}
-					else if (t == 2)
-					{
-						imgBoxPedine[t, c].Image = Image.FromFile("pedinaDama3.png");
-						imgBoxPedine[t, c].tipoPedina = K.DAMA_BIANCA;
-					}
-					else
-					{
-						imgBoxPedine[t, c].Image = Image.FromFile("pedinaDama4.png");
-						imgBoxPedine[t, c].tipoPedina = K.DAMA_NERA;
-					}
 					imgBoxPedine[t, c].SizeMode = PictureBoxSizeMode.StretchImage;
 					imgBoxPedine[t, c].ClientSize = new Size(K.DIMENSIONE_CELLA, K.DIMENSIONE_CELLA);
 					imgBoxPedine[t, c].Click += new System.EventHandler(this.mostraPossibiliMosse_Click);
@@ -133,26 +114,55 @@ namespace Dama_form
 		private void inserisciPedine()
 		{
 			int t = 0;
-			int[] numPedineInserite = new int[] { 0, 0, 0, 0 };
+			int[] numPedineInserite = new int[] { 0, 0 };
 			int[,] matricePedine = giocoDama.getMatricePedine();
+
 			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
 			{
 				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
 				{
+					elencoCelle[r, c].pictureBoxPedina = null;         // TEST
 					if (matricePedine[r, c] == K.PEDINA_BIANCA || matricePedine[r, c] == K.PEDINA_NERA || matricePedine[r, c] == K.DAMA_BIANCA || matricePedine[r, c] == K.DAMA_NERA)
 					{
 						if (matricePedine[r, c] == K.PEDINA_BIANCA) t = 0;
 						else if (matricePedine[r, c] == K.PEDINA_NERA) t = 1;
-						else if (matricePedine[r, c] == K.DAMA_BIANCA) t = 2;
-						else if (matricePedine[r, c] == K.DAMA_NERA) t = 3;
+						else if (matricePedine[r, c] == K.DAMA_BIANCA) t = 0;
+						else if (matricePedine[r, c] == K.DAMA_NERA) t = 1;
+						assegnaTipoPedina(matricePedine[r, c], numPedineInserite[t]);
 						imgBoxPedine[t, numPedineInserite[t]].r = r;
 						imgBoxPedine[t, numPedineInserite[t]].c = c;
+						elencoCelle[r, c].pictureBoxPedina = imgBoxPedine[t, numPedineInserite[t]];         // TEST
 						this.elencoCelle[r, c].Controls.Add(imgBoxPedine[t, numPedineInserite[t]]);
 						numPedineInserite[t]++;
 					}
 				}
 			}
 		}
+
+		private void assegnaTipoPedina(int tipoPedina, int c)
+		{
+			if (tipoPedina == K.PEDINA_BIANCA)
+			{
+				imgBoxPedine[tipoPedina - 1, c].Image = K.IMG_PEDINA_BIANCA;
+				imgBoxPedine[tipoPedina - 1, c].tipoPedina = K.PEDINA_BIANCA;
+			}
+			else if (tipoPedina == K.PEDINA_NERA)
+			{
+				imgBoxPedine[tipoPedina - 1, c].Image = K.IMG_PEDINA_NERA;
+				imgBoxPedine[tipoPedina - 1, c].tipoPedina = K.PEDINA_NERA;
+			}
+			else if (tipoPedina == K.DAMA_BIANCA)
+			{
+				imgBoxPedine[tipoPedina - K.VAL_DIFFERENZA_DAME_PEDINE - 1, c].Image = K.IMG_DAMA_BIANCA;
+				imgBoxPedine[tipoPedina - K.VAL_DIFFERENZA_DAME_PEDINE - 1, c].tipoPedina = K.DAMA_BIANCA;
+			}
+			else if (tipoPedina == K.DAMA_NERA)
+			{
+				imgBoxPedine[tipoPedina - K.VAL_DIFFERENZA_DAME_PEDINE - 1, c].Image = K.IMG_DAMA_NERA;
+				imgBoxPedine[tipoPedina - K.VAL_DIFFERENZA_DAME_PEDINE - 1, c].tipoPedina = K.DAMA_NERA;
+			}
+		}
+
 		private void mostraPossibiliMosse_Click(object sender, EventArgs e)
 		{
 			rimuoviPrecedentiEvidenziati();
@@ -197,7 +207,7 @@ namespace Dama_form
 			giocoDama.eseguiMossa(((PanelCella)sender).y, (((PanelCella)sender).x));
 			aggiornaPedine();
 			mostraTurnoCorrente();
-			if (giocoDama.getGiocoInCorso() == false)
+			if (!giocoDama.getGiocoInCorso())
 				textBoxTurnoGiocatore.Text = "Ha vinto il giocatore " + giocoDama.getVincitore();
 		}
 
@@ -223,9 +233,19 @@ namespace Dama_form
 
 		private void aggiornaPedine()
 		{
-			cancellaPedine();
+			//cancellaPedine();
 			rimuoviPrecedentiEvidenziati();
-			inserisciPedine();
+			//inserisciPedine();
+
+			EsitoMossa esitoMossa = giocoDama.getEsitoMossa();
+			elencoCelle[esitoMossa.rNew, esitoMossa.cNew].pictureBoxPedina = elencoCelle[esitoMossa.rPrec, esitoMossa.cPrec].pictureBoxPedina;
+			elencoCelle[esitoMossa.rNew, esitoMossa.cNew].pictureBoxPedina.r = esitoMossa.rNew;
+			elencoCelle[esitoMossa.rNew, esitoMossa.cNew].pictureBoxPedina.c = esitoMossa.cNew;
+			elencoCelle[esitoMossa.rNew, esitoMossa.cNew].Controls.Add(elencoCelle[esitoMossa.rNew, esitoMossa.cNew].pictureBoxPedina);
+			elencoCelle[esitoMossa.rPrec, esitoMossa.cPrec].Controls.Clear();
+			elencoCelle[esitoMossa.rPrec, esitoMossa.cPrec].pictureBoxPedina = null;
+			elencoCelle[esitoMossa.rMangiata, esitoMossa.cMangiata].Controls.Clear();
+			elencoCelle[esitoMossa.rMangiata, esitoMossa.cMangiata].pictureBoxPedina = null;
 		}
 		private void cancellaPedine()
 		{
@@ -240,7 +260,7 @@ namespace Dama_form
 
 		private void rimuoviPrecedentiEvidenziati()
 		{
-			for (int t = 0; t < K.TIPI_PEDINE; t++)
+			for (int t = 0; t < K.NUM_GIOCATORI; t++)
 			{
 				for (int c = 0; c < K.NUMERO_PEDINE_UTENTE; c++)
 				{
@@ -267,11 +287,13 @@ namespace Dama_form
 			public int r;
 			public int c;
 			public int tipoPedina;
+			public int idPedina;
 		}
 		private class PanelCella : Panel
 		{
 			public int y;
 			public int x;
+			public PictureBoxPedina pictureBoxPedina;
 		}
 	}
 

@@ -26,7 +26,14 @@ namespace Dama_form
 		public static readonly int DAMA_BIANCA = 3;
 		public static readonly int DAMA_NERA = 4;
 		public static readonly int CELLA_VUOTA = 0;
-		public static readonly int TIPI_PEDINE = 4;
+		//public static readonly int TIPI_PEDINE = 4;
+		public static readonly int NUM_GIOCATORI = 2;
 		public static readonly int VAL_DIFFERENZA_DAME_PEDINE = 2;
+
+		public static readonly Image IMG_PEDINA_BIANCA = Image.FromFile("pedinaDama1.png");
+		public static readonly Image IMG_PEDINA_NERA = Image.FromFile("pedinaDama2.png");
+		public static readonly Image IMG_DAMA_BIANCA = Image.FromFile("pedinaDama3.png");
+		public static readonly Image IMG_DAMA_NERA = Image.FromFile("pedinaDama4.png");
+
 	}
 }
