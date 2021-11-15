@@ -422,6 +422,11 @@ namespace Dama_form
 			}
 
 		}
+
+		private void apriIlSitoToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			System.Diagnostics.Process.Start("https://kaurgames2.altervista.org/index.html");
+		}
 	}
 
 

@@ -38,6 +38,8 @@ namespace Dama_form
 			this.nuovaPartitaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.kaurgamesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.apriIlSitoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -78,6 +80,7 @@ namespace Dama_form
 			this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
+            this.kaurgamesToolStripMenuItem,
             this.toolStripMenuItem1});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
@@ -124,6 +127,21 @@ namespace Dama_form
 			this.infoToolStripMenuItem.Text = "Informazioni su Dama";
 			this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
 			// 
+			// kaurgamesToolStripMenuItem
+			// 
+			this.kaurgamesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.apriIlSitoToolStripMenuItem});
+			this.kaurgamesToolStripMenuItem.Name = "kaurgamesToolStripMenuItem";
+			this.kaurgamesToolStripMenuItem.Size = new System.Drawing.Size(97, 24);
+			this.kaurgamesToolStripMenuItem.Text = "Kaurgames";
+			// 
+			// apriIlSitoToolStripMenuItem
+			// 
+			this.apriIlSitoToolStripMenuItem.Name = "apriIlSitoToolStripMenuItem";
+			this.apriIlSitoToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+			this.apriIlSitoToolStripMenuItem.Text = "Apri il sito";
+			this.apriIlSitoToolStripMenuItem.Click += new System.EventHandler(this.apriIlSitoToolStripMenuItem_Click);
+			// 
 			// FormGioco
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -156,6 +174,8 @@ namespace Dama_form
 		private System.Windows.Forms.ToolStripMenuItem nuovaPartitaToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem infoToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem kaurgamesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem apriIlSitoToolStripMenuItem;
 	}
 }
 
