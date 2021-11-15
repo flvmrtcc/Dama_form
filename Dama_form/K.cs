@@ -19,7 +19,8 @@ namespace Dama_form
 		public static readonly Color COLORE_CASELLA_MOSSA_POSSIBILE = Color.Green;
 		public static readonly Color COLORE_CASELLA_CLICK_DOWN = Color.Gray;
 		public static readonly Color COLORE_CASELLA_SELEZIONATA_CLICK_DOWN = Color.DarkGreen;
-		public static readonly Color COLORE_PANEL_TABELLA = Color.LightGray;
+		//public static readonly Color COLORE_PANEL_TABELLA = Color.LightGray;
+		public static readonly Color COLORE_PANEL_TABELLA = Color.AliceBlue;
 
 		public static readonly int PEDINA_BIANCA = 1;
 		public static readonly int PEDINA_NERA = 2;
@@ -34,6 +35,9 @@ namespace Dama_form
 		public static readonly Image IMG_PEDINA_NERA = Image.FromFile("pedinaDama2.png");
 		public static readonly Image IMG_DAMA_BIANCA = Image.FromFile("pedinaDama3.png");
 		public static readonly Image IMG_DAMA_NERA = Image.FromFile("pedinaDama4.png");
+
+		//public static readonly int DIM_X_FINESTRA;
+		//public static readonly int DIM_Y_FINESTRA;
 
 	}
 }

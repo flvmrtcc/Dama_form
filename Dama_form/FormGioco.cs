@@ -21,6 +21,8 @@ namespace Dama_form
 		TextBox textBoxTurnoGiocatore;
 		TextBox textBoxTempoTrascorso;
 
+		Panel panelSceltaModalita;
+
 		PanelCella[,] elencoCelle = new PanelCella[K.NUMERO_CELLE_LATO, K.NUMERO_CELLE_LATO];
 		PictureBoxPedina[,] imgBoxPedine = new PictureBoxPedina[K.NUM_GIOCATORI, K.NUMERO_PEDINE_UTENTE];
 		GiocoDama giocoDama;
@@ -34,16 +36,17 @@ namespace Dama_form
 		{
 			bottoneGioca.Visible = false;
 			titoloGioco.Visible = false;
-			giocoDama.iniziaPartita();
-			creaTabellaGioco();
-			creaCelleGioco();
-			creaPedine();
-			inserisciPedine();
-			creaPanelInfoPartita();
-			mostraTurnoCorrente();
-			mostraTempoTrascorso();
-			Thread t = new Thread(new ThreadStart(ThreadProc));
-			t.Start();
+			creaMenuSceltaModalita();
+			//giocoDama.iniziaPartita();
+			//creaTabellaGioco();
+			//creaCelleGioco();
+			//creaPedine();
+			//inserisciPedine();
+			//creaPanelInfoPartita();
+			//mostraTurnoCorrente();
+			//mostraTempoTrascorso();
+			//Thread t = new Thread(new ThreadStart(ThreadProc));
+			//t.Start();
 			tornaAlMenuToolStripMenuItem.Enabled = true;
 		}
 		public void ThreadProc()
@@ -54,6 +57,73 @@ namespace Dama_form
 				Thread.Sleep(1000);
 			}
 		}
+		private void creaMenuSceltaModalita()
+		{
+			panelSceltaModalita = new Panel();
+			panelSceltaModalita.Name = "panelSceltaModalita";
+			panelSceltaModalita.BackColor = K.COLORE_PANEL_TABELLA;
+			//panelSceltaModalita.Location = new System.Drawing.Point(5, 30);
+			//panelSceltaModalita.Size = new System.Drawing.Size(400, 500);
+			panelSceltaModalita.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+			panelSceltaModalita.Dock = DockStyle.Fill;
+			this.Controls.Add(panelSceltaModalita);
+
+			TextBox textBox = new TextBox();
+			textBox.Name = "textScegliModalita";
+			textBox.BorderStyle = BorderStyle.None;
+			textBox.BackColor = K.COLORE_PANEL_TABELLA;
+			textBox.ReadOnly = true;
+			textBox.Location = new System.Drawing.Point(0, 93);
+			textBox.Size = new System.Drawing.Size(panelSceltaModalita.Width, 76);
+			textBox.TextAlign = HorizontalAlignment.Center;
+			textBox.Anchor = AnchorStyles.Top;
+			textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0))); ;
+			textBox.Text = "Scegli la modalita";
+			panelSceltaModalita.Controls.Add(textBox);
+
+			Button bottoneModalitaSingoloGiocatore = new Button();
+			bottoneModalitaSingoloGiocatore.Cursor = System.Windows.Forms.Cursors.Hand;
+			bottoneModalitaSingoloGiocatore.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			bottoneModalitaSingoloGiocatore.Location = new System.Drawing.Point(225, 179);
+			bottoneModalitaSingoloGiocatore.Name = "bottoneSingoloGiocatore";
+			bottoneModalitaSingoloGiocatore.Size = new System.Drawing.Size(250, 80);
+			bottoneModalitaSingoloGiocatore.Text = "Giocatore singolo";
+			bottoneModalitaSingoloGiocatore.Anchor = AnchorStyles.Top;
+			bottoneModalitaSingoloGiocatore.UseVisualStyleBackColor = true;
+			bottoneModalitaSingoloGiocatore.Click += new System.EventHandler(this.bottoneSinglePlayer_Click);
+			panelSceltaModalita.Controls.Add(bottoneModalitaSingoloGiocatore);
+
+			Button bottoneModalitaMultigiocatore = new Button();
+			bottoneModalitaMultigiocatore.Cursor = System.Windows.Forms.Cursors.Hand;
+			bottoneModalitaMultigiocatore.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			bottoneModalitaMultigiocatore.Location = new System.Drawing.Point(225, 279);
+			bottoneModalitaMultigiocatore.Name = "bottoneMultiGiocatore";
+			bottoneModalitaMultigiocatore.Size = new System.Drawing.Size(250, 80);
+			bottoneModalitaMultigiocatore.Text = "Multigiocatore";
+			bottoneModalitaMultigiocatore.Anchor = AnchorStyles.Top;
+			bottoneModalitaMultigiocatore.UseVisualStyleBackColor = true;
+			bottoneModalitaMultigiocatore.Click += new System.EventHandler(this.bottoneMultiPlayer_Click);
+			panelSceltaModalita.Controls.Add(bottoneModalitaMultigiocatore);
+		}
+		private void bottoneSinglePlayer_Click(object sender, EventArgs e)
+		{
+			panelSceltaModalita.Visible = false;
+		}
+		private void bottoneMultiPlayer_Click(object sender, EventArgs e)
+		{
+			panelSceltaModalita.Visible = false;
+			giocoDama.iniziaPartita();
+			creaTabellaGioco();
+			creaCelleGioco();
+			creaPedine();
+			inserisciPedine();
+			creaPanelInfoPartita();
+			mostraTurnoCorrente();
+			mostraTempoTrascorso();
+			Thread t = new Thread(new ThreadStart(ThreadProc));
+			t.Start();
+		}
+
 		private void creaTabellaGioco()
 		{
 			panelTabella = new Panel();         // crea il panel che contiene la tabella di gioco
@@ -69,7 +139,7 @@ namespace Dama_form
 		{
 			panelInfoPartita = new Panel();
 			panelInfoPartita.Name = "panelInfoParita";
-			panelInfoPartita.BackColor = Color.LightGray;
+			panelInfoPartita.BackColor = K.COLORE_PANEL_TABELLA;
 			panelInfoPartita.Location = new System.Drawing.Point(515, 30);
 			panelInfoPartita.Size = new System.Drawing.Size(170, 504);
 			panelInfoPartita.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Right;
@@ -152,7 +222,6 @@ namespace Dama_form
 				}
 			}
 		}
-
 		private void assegnaTipoPedina(int tipoPedina, int c)
 		{
 			if (tipoPedina == K.PEDINA_BIANCA)
@@ -189,7 +258,6 @@ namespace Dama_form
 				evidenziaPossibiliMosse(giocoDama.getMatriceCelleDaEvidenziare(r, c));
 			}
 		}
-
 		private void evidenziaPossibiliMosse(bool[,] matriceDaEvidenziare)
 		{
 			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
@@ -206,7 +274,6 @@ namespace Dama_form
 				}
 			}
 		}
-
 		private void pedinaMouseDown_Click(object sender, MouseEventArgs e)
 		{
 			((PictureBoxPedina)sender).BackColor = K.COLORE_CASELLA_CLICK_DOWN;
@@ -276,7 +343,7 @@ namespace Dama_form
 			elencoCelle[esitoMossa.rNew, esitoMossa.cNew].pictureBoxPedina.r = esitoMossa.rNew;
 			elencoCelle[esitoMossa.rNew, esitoMossa.cNew].pictureBoxPedina.c = esitoMossa.cNew;
 			elencoCelle[esitoMossa.rNew, esitoMossa.cNew].Controls.Add(elencoCelle[esitoMossa.rNew, esitoMossa.cNew].pictureBoxPedina);
-			elencoCelle[esitoMossa.rPrec, esitoMossa.cPrec].Controls.Clear();
+			//elencoCelle[esitoMossa.rPrec, esitoMossa.cPrec].Controls.Clear();
 			elencoCelle[esitoMossa.rPrec, esitoMossa.cPrec].pictureBoxPedina = null;
 			if (esitoMossa.seMangiata)
 			{
@@ -297,7 +364,7 @@ namespace Dama_form
 				}
 			}
 		}
-		private void cancellaPedine()
+		/*private void cancellaPedine()
 		{
 			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
 			{
@@ -306,7 +373,7 @@ namespace Dama_form
 					elencoCelle[r, c].Controls.Clear();
 				}
 			}
-		}
+		}*/
 
 		private void rimuoviPrecedentiEvidenziati()
 		{
@@ -346,6 +413,7 @@ namespace Dama_form
 		}
 
 
+		// --------------------------- FINESTRE DI DIALOGO ---------------------------
 		// Finestra info dama
 		private void infoToolStripMenuItem_Click(object sender, EventArgs e)
 		{
@@ -372,6 +440,7 @@ namespace Dama_form
 				bottoneGioca.Visible = true;
 				titoloGioco.Visible = true;
 				tornaAlMenuToolStripMenuItem.Enabled = false;
+				panelSceltaModalita.Visible = false;
 			}
 		}
 		// Finestra di dialofo nuova partita
@@ -427,6 +496,7 @@ namespace Dama_form
 		{
 			System.Diagnostics.Process.Start("https://kaurgames2.altervista.org/index.html");
 		}
+	
 	}
 
 
