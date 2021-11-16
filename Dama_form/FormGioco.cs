@@ -278,8 +278,7 @@ namespace Dama_form
 			giocoDama.eseguiMossa(((PanelCella)sender).y, (((PanelCella)sender).x));
 			aggiornaPedine();
 			mostraTurnoCorrente();
-			if (!giocoDama.getGiocoInCorso())
-				textBoxTurnoGiocatore.Text = "Ha vinto il giocatore " + giocoDama.getVincitore();
+			if (!giocoDama.getGiocoInCorso()) textBoxTurnoGiocatore.Text = "Ha vinto il giocatore " + giocoDama.getVincitore();
 		}
 
 		// Box info
@@ -364,20 +363,13 @@ namespace Dama_form
 				}
 			}
 		}*/
-
 		private void rimuoviPrecedentiEvidenziati()
 		{
-			for (int t = 0; t < K.NUM_GIOCATORI; t++)
-			{
-				for (int c = 0; c < K.NUMERO_PEDINE_UTENTE; c++)
-				{
-					if (imgBoxPedine[t, c] != null) imgBoxPedine[t, c].BackColor = K.COLORE_CASELLE_NERE;
-				}
-			}
 			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
 			{
 				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
 				{
+					if (elencoCelle[r, c].pictureBoxPedina != null) elencoCelle[r, c].pictureBoxPedina.BackColor = K.COLORE_CASELLE_NERE;   // Toglie la selezione alle pedine
 					if (elencoCelle[r, c].BackColor == K.COLORE_CASELLA_MOSSA_POSSIBILE || elencoCelle[r, c].BackColor == K.COLORE_CASELLA_SELEZIONATA_CLICK_DOWN)
 					{
 						elencoCelle[r, c].BackColor = K.COLORE_CASELLE_NERE;
@@ -469,7 +461,6 @@ namespace Dama_form
 			var result = MessageBox.Show(message, caption,
 										 MessageBoxButtons.YesNo,
 										 MessageBoxIcon.Question);
-
 			if (result == DialogResult.No)
 			{
 				e.Cancel = true;// cancel the closure of the form.
@@ -478,9 +469,7 @@ namespace Dama_form
 			{
 				giocoDama.terminaPartita();
 			}
-
 		}
-
 		private void apriIlSitoToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			System.Diagnostics.Process.Start("https://kaurgames2.altervista.org/index.html");
