@@ -27,6 +27,8 @@ namespace Dama_form
 		PictureBoxPedina[,] imgBoxPedine = new PictureBoxPedina[K.NUM_GIOCATORI, K.NUMERO_PEDINE_UTENTE];
 		GiocoDama giocoDama;
 
+		Computer computer;
+
 		public FormGioco()
 		{
 			InitializeComponent();
@@ -39,7 +41,7 @@ namespace Dama_form
 			panelSceltaModalita.Visible = true;
 			tornaAlMenuToolStripMenuItem.Enabled = true;
 		}
-		public void ThreadProc()
+		public void ThreadMostraTempo()
 		{
 			while (giocoDama.getGiocoInCorso())
 			{
@@ -68,7 +70,7 @@ namespace Dama_form
 			textBox.TextAlign = HorizontalAlignment.Center;
 			textBox.Anchor = AnchorStyles.Top;
 			textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0))); ;
-			textBox.Text = "Scegli la modalita";
+			textBox.Text = "Scegli la modalità";
 			panelSceltaModalita.Controls.Add(textBox);
 
 			Button bottoneModalitaSingoloGiocatore = new Button();
@@ -97,10 +99,7 @@ namespace Dama_form
 		}
 		private void bottoneSinglePlayer_Click(object sender, EventArgs e)
 		{
-			panelSceltaModalita.Visible = false;
-		}
-		private void bottoneMultiPlayer_Click(object sender, EventArgs e)
-		{
+			computer = new Computer(giocoDama);
 			panelSceltaModalita.Visible = false;
 			giocoDama.iniziaPartita();
 			creaTabellaGioco();
@@ -110,7 +109,22 @@ namespace Dama_form
 			creaPanelInfoPartita();
 			mostraTurnoCorrente();
 			mostraTempoTrascorso();
-			Thread t = new Thread(new ThreadStart(ThreadProc));
+			Thread t = new Thread(new ThreadStart(ThreadMostraTempo));
+			t.Start();
+		}
+		private void bottoneMultiPlayer_Click(object sender, EventArgs e)
+		{
+			computer = null;
+			panelSceltaModalita.Visible = false;
+			giocoDama.iniziaPartita();
+			creaTabellaGioco();
+			creaCelleGioco();
+			creaPedine();
+			inserisciPedine();
+			creaPanelInfoPartita();
+			mostraTurnoCorrente();
+			mostraTempoTrascorso();
+			Thread t = new Thread(new ThreadStart(ThreadMostraTempo));
 			t.Start();
 		}
 
@@ -236,6 +250,7 @@ namespace Dama_form
 			}
 		}
 
+		// Permettono al giocatore di effettuare mosse
 		private void mostraPossibiliMosse_Click(object sender, EventArgs e)
 		{
 			rimuoviPrecedentiEvidenziati();
@@ -279,6 +294,13 @@ namespace Dama_form
 			aggiornaPedine();
 			mostraTurnoCorrente();
 			if (!giocoDama.getGiocoInCorso()) textBoxTurnoGiocatore.Text = "Ha vinto il giocatore " + giocoDama.getVincitore();
+			else if (giocoDama.getGiocatoreCorrente() == 2 && computer != null)
+			{
+				computer.trovaEdEseguiMossa();
+
+				aggiornaPedine();
+				mostraTurnoCorrente();
+			}
 		}
 
 		// Box info

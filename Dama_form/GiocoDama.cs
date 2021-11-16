@@ -176,8 +176,8 @@ namespace Dama_form
 				{
 					if (matricePedine[r, c] == giocatoreCorrente || matricePedine[r, c] - K.VAL_DIFFERENZA_DAME_PEDINE == giocatoreCorrente)
 					{
-						matriceMosse = getMatriceCelleDaEvidenziare(r, c);
-						if (controllaSePuoMangiare(r, c, matriceMosse)) return true;
+						matriceMosse = getMatriceCelleDaEvidenziare(r, c);      // controlla le mosse di tutte le pedine del giocatore corrente
+						if (controllaSePuoMangiare(r, c, matriceMosse)) return true;    // controlla se la pedina può mangiare
 					}
 				}
 			}
@@ -191,7 +191,7 @@ namespace Dama_form
 				{
 					if (matriceCelleDaEvidenziare[r0, c0])
 					{
-						if (Math.Abs(r0 - r) == 2 && Math.Abs(c0 - c) == 2) return true;
+						if (Math.Abs(r0 - r) == 2 && Math.Abs(c0 - c) == 2) return true;        // controlla se nella matrice delle mosse possibili della pedina sono presenti mosse in cui mangia
 					}
 				}
 			}
@@ -419,7 +419,7 @@ namespace Dama_form
 			return false;
 		}
 
-		// Metodi get
+		// Metodi get e set
 		public int getRSelezionata()
 		{
 			return rSelezionata;
@@ -427,6 +427,14 @@ namespace Dama_form
 		public int getCSelezionata()
 		{
 			return cSelezionata;
+		}
+		public void setRSelezionata(int r)
+		{
+			rSelezionata = r;
+		}
+		public void setCSelezionata(int c)
+		{
+			cSelezionata = c;
 		}
 		public int getGiocatoreCorrente()
 		{
@@ -459,6 +467,10 @@ namespace Dama_form
 			return tempoTrascorso;
 		}
 
+		public bool getObbligoMangiare()
+		{
+			return obbligoMangiare;
+		}
 	}
 
 	public class EsitoMossa

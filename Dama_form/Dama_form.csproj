@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Computer.cs" />
     <Compile Include="FormGioco.cs">
       <SubType>Form</SubType>
     </Compile>
