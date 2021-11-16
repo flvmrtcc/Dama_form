@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Dama_form
@@ -17,6 +18,7 @@ namespace Dama_form
 
 		public void trovaEdEseguiMossa()
 		{
+			Thread.Sleep(1000);
 			int rNew = 0;
 			int cNew = 0;
 
@@ -24,6 +26,7 @@ namespace Dama_form
 			bool pedinaScelta = false;
 			bool mossaTrovata = false;
 			bool[,] matriceCelleDaEvidenziare = null;
+
 			for (int r = K.NUMERO_CELLE_LATO - 1; r >= 0; r--)
 			{
 				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)

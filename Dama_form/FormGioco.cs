@@ -296,10 +296,14 @@ namespace Dama_form
 			if (!giocoDama.getGiocoInCorso()) textBoxTurnoGiocatore.Text = "Ha vinto il giocatore " + giocoDama.getVincitore();
 			else if (giocoDama.getGiocatoreCorrente() == 2 && computer != null)
 			{
-				computer.trovaEdEseguiMossa();
+				Thread tPC = new Thread(new ThreadStart(computer.trovaEdEseguiMossa));
+				tPC.Start();
+				tPC.Join();
+				//computer.trovaEdEseguiMossa();
 
 				aggiornaPedine();
 				mostraTurnoCorrente();
+				if (!giocoDama.getGiocoInCorso()) textBoxTurnoGiocatore.Text = "Ha vinto il giocatore " + giocoDama.getVincitore();
 			}
 		}
 
