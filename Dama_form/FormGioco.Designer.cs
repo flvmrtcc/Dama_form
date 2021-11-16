@@ -36,11 +36,13 @@ namespace Dama_form
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tornaAlMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.nuovaPartitaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.kaurgamesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.apriIlSitoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.panelSchermataGioca = new System.Windows.Forms.Panel();
 			this.menuStrip1.SuspendLayout();
+			this.panelSchermataGioca.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// titoloGioco
@@ -52,10 +54,10 @@ namespace Dama_form
 			this.titoloGioco.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
 			this.titoloGioco.Cursor = System.Windows.Forms.Cursors.Default;
 			this.titoloGioco.Font = new System.Drawing.Font("Microsoft Sans Serif", 40F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.titoloGioco.Location = new System.Drawing.Point(333, 93);
+			this.titoloGioco.Location = new System.Drawing.Point(5, 63);
 			this.titoloGioco.Name = "titoloGioco";
 			this.titoloGioco.ReadOnly = true;
-			this.titoloGioco.Size = new System.Drawing.Size(265, 76);
+			this.titoloGioco.Size = new System.Drawing.Size(920, 76);
 			this.titoloGioco.TabIndex = 0;
 			this.titoloGioco.TabStop = false;
 			this.titoloGioco.Text = "DAMA";
@@ -67,7 +69,7 @@ namespace Dama_form
 			this.bottoneGioca.Anchor = System.Windows.Forms.AnchorStyles.Top;
 			this.bottoneGioca.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.bottoneGioca.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.bottoneGioca.Location = new System.Drawing.Point(369, 279);
+			this.bottoneGioca.Location = new System.Drawing.Point(367, 256);
 			this.bottoneGioca.Name = "bottoneGioca";
 			this.bottoneGioca.Size = new System.Drawing.Size(200, 80);
 			this.bottoneGioca.TabIndex = 1;
@@ -84,7 +86,7 @@ namespace Dama_form
             this.toolStripMenuItem1});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(932, 28);
+			this.menuStrip1.Size = new System.Drawing.Size(932, 30);
 			this.menuStrip1.TabIndex = 2;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -94,30 +96,45 @@ namespace Dama_form
             this.tornaAlMenuToolStripMenuItem,
             this.nuovaPartitaToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-			this.fileToolStripMenuItem.Size = new System.Drawing.Size(60, 24);
+			this.fileToolStripMenuItem.Size = new System.Drawing.Size(60, 26);
 			this.fileToolStripMenuItem.Text = "Menu";
 			// 
 			// tornaAlMenuToolStripMenuItem
 			// 
 			this.tornaAlMenuToolStripMenuItem.Enabled = false;
 			this.tornaAlMenuToolStripMenuItem.Name = "tornaAlMenuToolStripMenuItem";
-			this.tornaAlMenuToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+			this.tornaAlMenuToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
 			this.tornaAlMenuToolStripMenuItem.Text = "Torna al menu";
 			this.tornaAlMenuToolStripMenuItem.Click += new System.EventHandler(this.tornaAlMenuToolStripMenuItem_Click);
 			// 
 			// nuovaPartitaToolStripMenuItem
 			// 
 			this.nuovaPartitaToolStripMenuItem.Name = "nuovaPartitaToolStripMenuItem";
-			this.nuovaPartitaToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+			this.nuovaPartitaToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
 			this.nuovaPartitaToolStripMenuItem.Text = "Nuova partita";
 			this.nuovaPartitaToolStripMenuItem.Click += new System.EventHandler(this.nuovaPartitaToolStripMenuItem_Click);
+			// 
+			// kaurgamesToolStripMenuItem
+			// 
+			this.kaurgamesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.apriIlSitoToolStripMenuItem});
+			this.kaurgamesToolStripMenuItem.Name = "kaurgamesToolStripMenuItem";
+			this.kaurgamesToolStripMenuItem.Size = new System.Drawing.Size(97, 26);
+			this.kaurgamesToolStripMenuItem.Text = "Kaurgames";
+			// 
+			// apriIlSitoToolStripMenuItem
+			// 
+			this.apriIlSitoToolStripMenuItem.Name = "apriIlSitoToolStripMenuItem";
+			this.apriIlSitoToolStripMenuItem.Size = new System.Drawing.Size(160, 26);
+			this.apriIlSitoToolStripMenuItem.Text = "Apri il sito";
+			this.apriIlSitoToolStripMenuItem.Click += new System.EventHandler(this.apriIlSitoToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.infoToolStripMenuItem});
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(30, 24);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(30, 26);
 			this.toolStripMenuItem1.Text = "?";
 			// 
 			// infoToolStripMenuItem
@@ -127,20 +144,15 @@ namespace Dama_form
 			this.infoToolStripMenuItem.Text = "Informazioni su Dama";
 			this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
 			// 
-			// kaurgamesToolStripMenuItem
+			// panelSchermataGioca
 			// 
-			this.kaurgamesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.apriIlSitoToolStripMenuItem});
-			this.kaurgamesToolStripMenuItem.Name = "kaurgamesToolStripMenuItem";
-			this.kaurgamesToolStripMenuItem.Size = new System.Drawing.Size(97, 24);
-			this.kaurgamesToolStripMenuItem.Text = "Kaurgames";
-			// 
-			// apriIlSitoToolStripMenuItem
-			// 
-			this.apriIlSitoToolStripMenuItem.Name = "apriIlSitoToolStripMenuItem";
-			this.apriIlSitoToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-			this.apriIlSitoToolStripMenuItem.Text = "Apri il sito";
-			this.apriIlSitoToolStripMenuItem.Click += new System.EventHandler(this.apriIlSitoToolStripMenuItem_Click);
+			this.panelSchermataGioca.Controls.Add(this.titoloGioco);
+			this.panelSchermataGioca.Controls.Add(this.bottoneGioca);
+			this.panelSchermataGioca.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panelSchermataGioca.Location = new System.Drawing.Point(0, 30);
+			this.panelSchermataGioca.Name = "panelSchermataGioca";
+			this.panelSchermataGioca.Size = new System.Drawing.Size(932, 623);
+			this.panelSchermataGioca.TabIndex = 3;
 			// 
 			// FormGioco
 			// 
@@ -148,8 +160,7 @@ namespace Dama_form
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
 			this.ClientSize = new System.Drawing.Size(932, 653);
-			this.Controls.Add(this.bottoneGioca);
-			this.Controls.Add(this.titoloGioco);
+			this.Controls.Add(this.panelSchermataGioca);
 			this.Controls.Add(this.menuStrip1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuStrip1;
@@ -159,6 +170,8 @@ namespace Dama_form
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormGioco_FormClosing);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
+			this.panelSchermataGioca.ResumeLayout(false);
+			this.panelSchermataGioca.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -176,6 +189,7 @@ namespace Dama_form
 		private System.Windows.Forms.ToolStripMenuItem infoToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem kaurgamesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem apriIlSitoToolStripMenuItem;
+		private System.Windows.Forms.Panel panelSchermataGioca;
 	}
 }
 

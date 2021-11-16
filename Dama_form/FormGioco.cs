@@ -34,8 +34,7 @@ namespace Dama_form
 		}
 		private void bottoneGioca_Click(object sender, EventArgs e)
 		{
-			bottoneGioca.Visible = false;
-			titoloGioco.Visible = false;
+			panelSchermataGioca.Visible = false;
 			creaMenuSceltaModalita();
 			//giocoDama.iniziaPartita();
 			//creaTabellaGioco();
@@ -437,8 +436,7 @@ namespace Dama_form
 				giocoDama.terminaPartita();
 				this.Controls.Remove(panelTabella);
 				this.Controls.Remove(panelInfoPartita);
-				bottoneGioca.Visible = true;
-				titoloGioco.Visible = true;
+				panelSchermataGioca.Visible = true;
 				tornaAlMenuToolStripMenuItem.Enabled = false;
 				panelSceltaModalita.Visible = false;
 			}
