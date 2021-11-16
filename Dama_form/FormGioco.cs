@@ -35,17 +35,8 @@ namespace Dama_form
 		private void bottoneGioca_Click(object sender, EventArgs e)
 		{
 			panelSchermataGioca.Visible = false;
-			creaMenuSceltaModalita();
-			//giocoDama.iniziaPartita();
-			//creaTabellaGioco();
-			//creaCelleGioco();
-			//creaPedine();
-			//inserisciPedine();
-			//creaPanelInfoPartita();
-			//mostraTurnoCorrente();
-			//mostraTempoTrascorso();
-			//Thread t = new Thread(new ThreadStart(ThreadProc));
-			//t.Start();
+			if (panelSceltaModalita == null) creaMenuSceltaModalita();
+			panelSceltaModalita.Visible = true;
 			tornaAlMenuToolStripMenuItem.Enabled = true;
 		}
 		public void ThreadProc()
@@ -494,7 +485,7 @@ namespace Dama_form
 		{
 			System.Diagnostics.Process.Start("https://kaurgames2.altervista.org/index.html");
 		}
-	
+
 	}
 
 
