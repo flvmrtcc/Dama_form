@@ -20,7 +20,8 @@ namespace Dama_form
 		public static readonly Color COLORE_CASELLA_CLICK_DOWN = Color.Gray;
 		public static readonly Color COLORE_CASELLA_SELEZIONATA_CLICK_DOWN = Color.DarkGreen;
 		//public static readonly Color COLORE_PANEL_TABELLA = Color.LightGray;
-		public static readonly Color COLORE_PANEL_TABELLA = Color.AliceBlue;
+		//public static readonly Color COLORE_PANEL_TABELLA = Color.AliceBlue;
+		public static readonly Color COLORE_PANEL_TABELLA = Color.FromArgb(225, 223, 180);
 
 		public static readonly int PEDINA_BIANCA = 1;
 		public static readonly int PEDINA_NERA = 2;

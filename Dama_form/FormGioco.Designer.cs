@@ -48,7 +48,7 @@ namespace Dama_form
 			// titoloGioco
 			// 
 			this.titoloGioco.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.titoloGioco.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+			this.titoloGioco.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(223)))), ((int)(((byte)(180)))));
 			this.titoloGioco.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.titoloGioco.CausesValidation = false;
 			this.titoloGioco.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
@@ -86,7 +86,7 @@ namespace Dama_form
             this.toolStripMenuItem1});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(932, 30);
+			this.menuStrip1.Size = new System.Drawing.Size(932, 28);
 			this.menuStrip1.TabIndex = 2;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -96,7 +96,7 @@ namespace Dama_form
             this.tornaAlMenuToolStripMenuItem,
             this.nuovaPartitaToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-			this.fileToolStripMenuItem.Size = new System.Drawing.Size(60, 26);
+			this.fileToolStripMenuItem.Size = new System.Drawing.Size(60, 24);
 			this.fileToolStripMenuItem.Text = "Menu";
 			// 
 			// tornaAlMenuToolStripMenuItem
@@ -119,7 +119,7 @@ namespace Dama_form
 			this.kaurgamesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.apriIlSitoToolStripMenuItem});
 			this.kaurgamesToolStripMenuItem.Name = "kaurgamesToolStripMenuItem";
-			this.kaurgamesToolStripMenuItem.Size = new System.Drawing.Size(97, 26);
+			this.kaurgamesToolStripMenuItem.Size = new System.Drawing.Size(97, 24);
 			this.kaurgamesToolStripMenuItem.Text = "Kaurgames";
 			// 
 			// apriIlSitoToolStripMenuItem
@@ -134,7 +134,7 @@ namespace Dama_form
 			this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.infoToolStripMenuItem});
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(30, 26);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(30, 24);
 			this.toolStripMenuItem1.Text = "?";
 			// 
 			// infoToolStripMenuItem
@@ -146,19 +146,20 @@ namespace Dama_form
 			// 
 			// panelSchermataGioca
 			// 
+			this.panelSchermataGioca.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(223)))), ((int)(((byte)(180)))));
 			this.panelSchermataGioca.Controls.Add(this.titoloGioco);
 			this.panelSchermataGioca.Controls.Add(this.bottoneGioca);
 			this.panelSchermataGioca.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panelSchermataGioca.Location = new System.Drawing.Point(0, 30);
+			this.panelSchermataGioca.Location = new System.Drawing.Point(0, 28);
 			this.panelSchermataGioca.Name = "panelSchermataGioca";
-			this.panelSchermataGioca.Size = new System.Drawing.Size(932, 623);
+			this.panelSchermataGioca.Size = new System.Drawing.Size(932, 625);
 			this.panelSchermataGioca.TabIndex = 3;
 			// 
 			// FormGioco
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(213)))), ((int)(((byte)(170)))));
 			this.ClientSize = new System.Drawing.Size(932, 653);
 			this.Controls.Add(this.panelSchermataGioca);
 			this.Controls.Add(this.menuStrip1);
