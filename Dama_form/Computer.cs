@@ -29,7 +29,7 @@ namespace Dama_form
 			var rand = new Random();
 			int numPedinaScelto = rand.Next(0, numeroPedineConMosse());
 			int numPedineTrovate = 0;
-			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
+			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)	// Trova la mossa casuale scelta
 			{
 				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
 				{
@@ -52,7 +52,7 @@ namespace Dama_form
 					}
 				}
 			}
-
+			
 
 			// Sceglie una mossa della pedina a caso
 			int numMossePedinaPossibili = numeroMossePedina(matriceCelleDaEvidenziare);
