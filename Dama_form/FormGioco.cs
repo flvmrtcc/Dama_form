@@ -56,7 +56,7 @@ namespace Dama_form
 			panelSceltaModalita.BackColor = K.COLORE_PANEL_TABELLA;
 			//panelSceltaModalita.Location = new System.Drawing.Point(5, 30);
 			//panelSceltaModalita.Size = new System.Drawing.Size(400, 500);
-			panelSceltaModalita.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+			//panelSceltaModalita.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 			panelSceltaModalita.Dock = DockStyle.Fill;
 			this.Controls.Add(panelSceltaModalita);
 
@@ -293,7 +293,7 @@ namespace Dama_form
 			giocoDama.eseguiMossa(((PanelCella)sender).y, (((PanelCella)sender).x));
 			aggiornaPedine();
 			mostraTurnoCorrente();
-			if (!giocoDama.getGiocoInCorso()) textBoxTurnoGiocatore.Text = "Ha vinto il giocatore " + giocoDama.getVincitore();
+			if (!giocoDama.getGiocoInCorso()) mostraStringaVittoria();
 			else if (giocoDama.getGiocatoreCorrente() == 2 && computer != null)
 			{
 				Thread tPC = new Thread(new ThreadStart(computer.trovaEdEseguiMossa));
@@ -303,8 +303,12 @@ namespace Dama_form
 
 				aggiornaPedine();
 				mostraTurnoCorrente();
-				if (!giocoDama.getGiocoInCorso()) textBoxTurnoGiocatore.Text = "Ha vinto il giocatore " + giocoDama.getVincitore();
+				if (!giocoDama.getGiocoInCorso()) mostraStringaVittoria();
 			}
+		}
+		private void mostraStringaVittoria()
+		{
+			textBoxTurnoGiocatore.Text = "Ha vinto il giocatore " + giocoDama.getVincitore();
 		}
 
 		// Box info

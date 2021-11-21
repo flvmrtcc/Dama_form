@@ -24,10 +24,12 @@ namespace Dama_form
 
 			int[,] matricePedine = giocoDama.getMatricePedine();
 			bool pedinaScelta = false;
-			bool mossaTrovata = false;
 			bool[,] matriceCelleDaEvidenziare = null;
 
-			for (int r = K.NUMERO_CELLE_LATO - 1; r >= 0; r--)
+			var rand = new Random();
+			int numPedinaScelto = rand.Next(0, numeroPedineConMosse());
+			int numPedineTrovate = 0;
+			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
 			{
 				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
 				{
@@ -38,33 +40,62 @@ namespace Dama_form
 							matriceCelleDaEvidenziare = giocoDama.getMatriceCelleDaEvidenziare(r, c);
 							if (controllaSePresenteMossa(matriceCelleDaEvidenziare))
 							{
-								pedinaScelta = true;
-								giocoDama.setRSelezionata(r);
-								giocoDama.setCSelezionata(c);
+								if (numPedineTrovate == numPedinaScelto)
+								{
+									pedinaScelta = true;
+									giocoDama.setRSelezionata(r);
+									giocoDama.setCSelezionata(c);
+								}
+								numPedineTrovate++;
 							}
 						}
 					}
 				}
 			}
 
+
+			// Sceglie una mossa della pedina a caso
+			int numMossePedinaPossibili = numeroMossePedina(matriceCelleDaEvidenziare);
+			int numScelto = rand.Next(0, numMossePedinaPossibili);
 			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
 			{
 				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
 				{
-					if (!mossaTrovata)
-						if (matriceCelleDaEvidenziare[r, c])
+					if (matriceCelleDaEvidenziare[r, c])
+					{
+						if (numScelto == 0)
 						{
-							mossaTrovata = true;
 							rNew = r;
 							cNew = c;
 						}
+						numScelto--;
+					}
 				}
 			}
 			giocoDama.eseguiMossa(rNew, cNew);
 
 		}
 
-		public bool controllaSePresenteMossa(bool[,] matriceCelleDaEvidenziare)
+		// TROVA IL NUMERO DI PEDINE CON MOSSE
+		private int numeroPedineConMosse()
+		{
+			bool[,] matriceCelleDaEvidenziare = null;
+			int num = 0;
+			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
+			{
+				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
+				{
+					matriceCelleDaEvidenziare = giocoDama.getMatriceCelleDaEvidenziare(r, c);
+					if (controllaSePresenteMossa(matriceCelleDaEvidenziare))
+					{
+						num++;
+					}
+				}
+			}
+			return num;
+		}
+
+		private bool controllaSePresenteMossa(bool[,] matriceCelleDaEvidenziare)
 		{
 			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
 			{
@@ -74,6 +105,19 @@ namespace Dama_form
 				}
 			}
 			return false;
+		}
+
+		private int numeroMossePedina(bool[,] matriceCelleDaEvidenziare)
+		{
+			int numeroMosse = 0;
+			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
+			{
+				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
+				{
+					if (matriceCelleDaEvidenziare[r, c]) numeroMosse++;
+				}
+			}
+			return numeroMosse;
 		}
 
 	}
