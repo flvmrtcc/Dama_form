@@ -1,5 +1,20 @@
 ﻿// Martucci Flavio - 5INF3
-
+/*
+ * 
+ * Programma gioco dama in C# con l'utilizzo delle form.
+ * Modalità di gioco:
+ *		- Modalità di base multiplayer.
+ *		- Modalità singleplayer (il computer sceglie una pedina in modo random e, 
+ *			successivamente sceglie randomicamente una mossa tra le possibili della 
+ *			pedina scelta in precedenza).
+ *			La classe Computer si occupa di scegliere la mossa del pc.
+ * Presente obbligo di mangiare (se è possibile mangiare una o più pedine è obbligatorio scegliere una tra quelle mosse).
+ * Presente conteggio del tempo.
+ * La classe GiocoDama gestisce il gioco scambiandosi informazioni con la classe FormGioco (parte grafica).
+ * Presente barra in alto con il menu per tornare alla schermata principale o iniziare una nuova partita, 
+ *		chiedendo conferma con le finestre di dialogo se è già in corso un'altra partita.
+ * 
+ */
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,8 +33,10 @@ namespace Dama_form
 		Panel panelTabella;
 
 		Panel panelInfoPartita;
+		Panel panelTurnoPartita;
 		TextBox textBoxTurnoGiocatore;
 		TextBox textBoxTempoTrascorso;
+		PictureBox boxPedinaTurnoGiocatore;
 
 		Panel panelSceltaModalita;
 
@@ -54,9 +71,6 @@ namespace Dama_form
 			panelSceltaModalita = new Panel();
 			panelSceltaModalita.Name = "panelSceltaModalita";
 			panelSceltaModalita.BackColor = K.COLORE_PANEL_TABELLA;
-			//panelSceltaModalita.Location = new System.Drawing.Point(5, 30);
-			//panelSceltaModalita.Size = new System.Drawing.Size(400, 500);
-			//panelSceltaModalita.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 			panelSceltaModalita.Dock = DockStyle.Fill;
 			this.Controls.Add(panelSceltaModalita);
 
@@ -76,7 +90,7 @@ namespace Dama_form
 			Button bottoneModalitaSingoloGiocatore = new Button();
 			bottoneModalitaSingoloGiocatore.Cursor = System.Windows.Forms.Cursors.Hand;
 			bottoneModalitaSingoloGiocatore.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			bottoneModalitaSingoloGiocatore.Location = new System.Drawing.Point(225, 179);
+			bottoneModalitaSingoloGiocatore.Location = new System.Drawing.Point(240, 179);
 			bottoneModalitaSingoloGiocatore.Name = "bottoneSingoloGiocatore";
 			bottoneModalitaSingoloGiocatore.Size = new System.Drawing.Size(250, 80);
 			bottoneModalitaSingoloGiocatore.Text = "Giocatore singolo";
@@ -88,7 +102,7 @@ namespace Dama_form
 			Button bottoneModalitaMultigiocatore = new Button();
 			bottoneModalitaMultigiocatore.Cursor = System.Windows.Forms.Cursors.Hand;
 			bottoneModalitaMultigiocatore.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			bottoneModalitaMultigiocatore.Location = new System.Drawing.Point(225, 279);
+			bottoneModalitaMultigiocatore.Location = new System.Drawing.Point(240, 279);
 			bottoneModalitaMultigiocatore.Name = "bottoneMultiGiocatore";
 			bottoneModalitaMultigiocatore.Size = new System.Drawing.Size(250, 80);
 			bottoneModalitaMultigiocatore.Text = "Multigiocatore";
@@ -128,6 +142,7 @@ namespace Dama_form
 			t.Start();
 		}
 
+		// TABELLA GIOCO
 		private void creaTabellaGioco()
 		{
 			panelTabella = new Panel();         // crea il panel che contiene la tabella di gioco
@@ -139,21 +154,9 @@ namespace Dama_form
 			//panelTabella.Dock = DockStyle.Fill;
 			this.Controls.Add(panelTabella);
 		}
-		private void creaPanelInfoPartita()
-		{
-			panelInfoPartita = new Panel();
-			panelInfoPartita.Name = "panelInfoParita";
-			panelInfoPartita.BackColor = K.COLORE_PANEL_TABELLA;
-			panelInfoPartita.Location = new System.Drawing.Point(515, 30);
-			panelInfoPartita.Size = new System.Drawing.Size(170, 504);
-			panelInfoPartita.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Right;
-			this.Controls.Add(panelInfoPartita);
-			creaBoxTempoTrascorso();
-			creaBoxTurnoCorrente();
-		}
 		private void creaCelleGioco()
 		{
-			int px = 10;
+			int px;
 			int py = 10;
 			bool coloreCella = false;
 			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
@@ -165,17 +168,11 @@ namespace Dama_form
 					elencoCelle[r, c].Name = "panel" + r + "-" + c;
 					elencoCelle[r, c].x = c;
 					elencoCelle[r, c].y = r;
-					if (coloreCella)
-					{
-						elencoCelle[r, c].BackColor = K.COLORE_CASELLE_BIANCHE;
-					}
-					else
-					{
-						elencoCelle[r, c].BackColor = K.COLORE_CASELLE_NERE;
-					}
+					if (coloreCella) elencoCelle[r, c].BackColor = K.COLORE_CASELLE_BIANCHE;
+					else elencoCelle[r, c].BackColor = K.COLORE_CASELLE_NERE;
 					coloreCella = !coloreCella;
-					elencoCelle[r, c].Location = new System.Drawing.Point(px, py);
-					elencoCelle[r, c].Size = new System.Drawing.Size(K.DIMENSIONE_CELLA, K.DIMENSIONE_CELLA);
+					elencoCelle[r, c].Location = new Point(px, py);
+					elencoCelle[r, c].Size = new Size(K.DIMENSIONE_CELLA, K.DIMENSIONE_CELLA);
 					elencoCelle[r, c].Anchor = AnchorStyles.Top;
 					this.panelTabella.Controls.Add(elencoCelle[r, c]);
 					px += K.DIMENSIONE_CELLA;
@@ -250,6 +247,85 @@ namespace Dama_form
 			}
 		}
 
+		// PANEL INFO PARTITA
+		private void creaPanelInfoPartita()
+		{
+			panelInfoPartita = new Panel();
+			panelInfoPartita.Name = "panelInfoParita";
+			panelInfoPartita.BackColor = K.COLORE_PANEL_TABELLA;
+			panelInfoPartita.Location = new System.Drawing.Point(515, 30);
+			panelInfoPartita.Size = new System.Drawing.Size(200, 504);
+			panelInfoPartita.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Right;
+			this.Controls.Add(panelInfoPartita);
+			creaBoxTempoTrascorso();
+			creaPanelTurno();
+			creaBoxTurnoCorrente();
+		}
+		private void creaPanelTurno()
+		{
+			panelTurnoPartita = new Panel();
+			panelTurnoPartita.Name = "panelTurnoParita";
+			panelTurnoPartita.BackColor = K.COLORE_PANEL_TURNO;
+			panelTurnoPartita.Dock = DockStyle.Top;
+			panelTurnoPartita.Location = new System.Drawing.Point(515, 30);
+			panelTurnoPartita.Size = new System.Drawing.Size(200, 200);
+			panelTurnoPartita.BorderStyle = BorderStyle.FixedSingle;
+			panelTurnoPartita.Padding = new Padding(10);
+			panelInfoPartita.Controls.Add(panelTurnoPartita);
+
+			boxPedinaTurnoGiocatore = new PictureBox();
+			boxPedinaTurnoGiocatore.Image = K.IMG_PEDINA_BIANCA;
+			boxPedinaTurnoGiocatore.SizeMode = PictureBoxSizeMode.StretchImage;
+			boxPedinaTurnoGiocatore.Location = new Point(55, 80);
+			boxPedinaTurnoGiocatore.Size = new System.Drawing.Size(90, 90);
+			panelTurnoPartita.Controls.Add(boxPedinaTurnoGiocatore);
+		}
+		// Box info
+		private void creaBoxTurnoCorrente()
+		{
+			textBoxTurnoGiocatore = new TextBox();
+			textBoxTurnoGiocatore.Name = "textInfo";
+			textBoxTurnoGiocatore.Dock = DockStyle.Top;
+			textBoxTurnoGiocatore.BorderStyle = BorderStyle.FixedSingle;
+			textBoxTurnoGiocatore.ReadOnly = true;
+			textBoxTurnoGiocatore.Multiline = true;
+			textBoxTurnoGiocatore.WordWrap = true;
+			textBoxTurnoGiocatore.Height = 55;
+			textBoxTurnoGiocatore.TextAlign = HorizontalAlignment.Center;
+			textBoxTurnoGiocatore.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0))); ;
+			panelTurnoPartita.Controls.Add(textBoxTurnoGiocatore);
+		}
+		private void mostraTurnoCorrente()
+		{
+			if (giocoDama.getGiocatoreCorrente() == 1) boxPedinaTurnoGiocatore.Image = K.IMG_PEDINA_BIANCA;
+			else boxPedinaTurnoGiocatore.Image = K.IMG_PEDINA_NERA;
+			textBoxTurnoGiocatore.Text = "Turno del giocatore " + giocoDama.getGiocatoreCorrente();
+		}
+		private void creaBoxTempoTrascorso()
+		{
+			textBoxTempoTrascorso = new TextBox();
+			textBoxTempoTrascorso.Name = "textInfoTempoTrascorso";
+			textBoxTempoTrascorso.Dock = DockStyle.Top;
+			textBoxTempoTrascorso.BorderStyle = BorderStyle.FixedSingle;
+			textBoxTempoTrascorso.ReadOnly = true;
+			textBoxTempoTrascorso.Multiline = true;
+			textBoxTempoTrascorso.WordWrap = true;
+			textBoxTempoTrascorso.Height = 65;
+			textBoxTempoTrascorso.TextAlign = HorizontalAlignment.Center;
+			textBoxTempoTrascorso.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0))); ;
+			panelInfoPartita.Controls.Add(textBoxTempoTrascorso);
+		}
+		private void mostraTempoTrascorso()
+		{
+			CheckForIllegalCrossThreadCalls = false;
+			textBoxTempoTrascorso.Text = "Tempo trascorso: " + giocoDama.getTempoTrascorso();
+		}
+		private void mostraStringaVittoria()
+		{
+			textBoxTurnoGiocatore.BackColor = Color.LightGreen;
+			textBoxTurnoGiocatore.Text = "Ha vinto il giocatore " + giocoDama.getVincitore();
+		}
+
 		// Permettono al giocatore di effettuare mosse
 		private void mostraPossibiliMosse_Click(object sender, EventArgs e)
 		{
@@ -290,64 +366,21 @@ namespace Dama_form
 
 		private void eseguiMossaScelta(object sender, EventArgs e)
 		{
-			giocoDama.eseguiMossa(((PanelCella)sender).y, (((PanelCella)sender).x));
+			giocoDama.eseguiMossa(((PanelCella)sender).y, (((PanelCella)sender).x));    // Esegue la mossa aggiornando la matrice nella classe GiocoDama
 			aggiornaPedine();
 			mostraTurnoCorrente();
 			if (!giocoDama.getGiocoInCorso()) mostraStringaVittoria();
-			else if (giocoDama.getGiocatoreCorrente() == 2 && computer != null)
+			else if (giocoDama.getGiocatoreCorrente() == 2 && computer != null) // Se è in modalità single player fa eseguire la mossa al computer
 			{
-				Thread tPC = new Thread(new ThreadStart(computer.trovaEdEseguiMossa));
+				Thread tPC = new Thread(new ThreadStart(computer.trovaEdEseguiMossa));  // Thread che permette di far aspettare il pc prima di scegliere la mossa, senza bloccare l'aggiornamento delle pedine della mossa precedente
 				tPC.Start();
-				tPC.Join();
-				//computer.trovaEdEseguiMossa();
+				tPC.Join();     // attende che il pc abbia effettuato la mossa
+								//computer.trovaEdEseguiMossa();
 
 				aggiornaPedine();
 				mostraTurnoCorrente();
-				if (!giocoDama.getGiocoInCorso()) mostraStringaVittoria();
+				if (!giocoDama.getGiocoInCorso()) mostraStringaVittoria();  // controlla se il gioco è ancora in corso o è terminato con la vittoria di un giocatore
 			}
-		}
-		private void mostraStringaVittoria()
-		{
-			textBoxTurnoGiocatore.Text = "Ha vinto il giocatore " + giocoDama.getVincitore();
-		}
-
-		// Box info
-		private void creaBoxTurnoCorrente()
-		{
-			textBoxTurnoGiocatore = new TextBox();
-			textBoxTurnoGiocatore.Name = "textInfo";
-			textBoxTurnoGiocatore.Dock = DockStyle.Top;
-			textBoxTurnoGiocatore.BorderStyle = BorderStyle.FixedSingle;
-			textBoxTurnoGiocatore.ReadOnly = true;
-			textBoxTurnoGiocatore.Multiline = true;
-			textBoxTurnoGiocatore.WordWrap = true;
-			textBoxTurnoGiocatore.Height = 55;
-			textBoxTurnoGiocatore.TextAlign = HorizontalAlignment.Center;
-			textBoxTurnoGiocatore.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0))); ;
-			panelInfoPartita.Controls.Add(textBoxTurnoGiocatore);
-		}
-		private void mostraTurnoCorrente()
-		{
-			textBoxTurnoGiocatore.Text = "Turno del giocatore " + giocoDama.getGiocatoreCorrente();
-		}
-		private void creaBoxTempoTrascorso()
-		{
-			textBoxTempoTrascorso = new TextBox();
-			textBoxTempoTrascorso.Name = "textInfoTempoTrascorso";
-			textBoxTempoTrascorso.Dock = DockStyle.Top;
-			textBoxTempoTrascorso.BorderStyle = BorderStyle.FixedSingle;
-			textBoxTempoTrascorso.ReadOnly = true;
-			textBoxTempoTrascorso.Multiline = true;
-			textBoxTempoTrascorso.WordWrap = true;
-			textBoxTempoTrascorso.Height = 85;
-			textBoxTempoTrascorso.TextAlign = HorizontalAlignment.Center;
-			textBoxTempoTrascorso.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0))); ;
-			panelInfoPartita.Controls.Add(textBoxTempoTrascorso);
-		}
-		private void mostraTempoTrascorso()
-		{
-			CheckForIllegalCrossThreadCalls = false;
-			textBoxTempoTrascorso.Text = "Tempo trascorso: " + giocoDama.getTempoTrascorso();
 		}
 
 		// Aggiorna pedine dopo la mossa
@@ -356,7 +389,7 @@ namespace Dama_form
 			//cancellaPedine();
 			rimuoviPrecedentiEvidenziati();
 			//inserisciPedine();
-
+			
 			EsitoMossa esitoMossa = giocoDama.getEsitoMossa();              // legge l'esito della mossa e mostra le modifiche nel tabellone
 			elencoCelle[esitoMossa.rNew, esitoMossa.cNew].pictureBoxPedina = elencoCelle[esitoMossa.rPrec, esitoMossa.cPrec].pictureBoxPedina;
 			elencoCelle[esitoMossa.rNew, esitoMossa.cNew].pictureBoxPedina.r = esitoMossa.rNew;
@@ -383,7 +416,7 @@ namespace Dama_form
 				}
 			}
 		}
-		/*private void cancellaPedine()
+		private void cancellaPedine()
 		{
 			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
 			{
@@ -392,7 +425,7 @@ namespace Dama_form
 					elencoCelle[r, c].Controls.Clear();
 				}
 			}
-		}*/
+		}
 		private void rimuoviPrecedentiEvidenziati()
 		{
 			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)

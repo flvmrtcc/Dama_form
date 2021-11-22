@@ -22,6 +22,8 @@ namespace Dama_form
 		//public static readonly Color COLORE_PANEL_TABELLA = Color.LightGray;
 		//public static readonly Color COLORE_PANEL_TABELLA = Color.AliceBlue;
 		public static readonly Color COLORE_PANEL_TABELLA = Color.FromArgb(225, 223, 180);
+		//public static readonly Color COLORE_PANEL_TURNO = Color.LightGray;
+		public static readonly Color COLORE_PANEL_TURNO = Color.FromArgb(163, 163, 163);
 
 		public static readonly int PEDINA_BIANCA = 1;
 		public static readonly int PEDINA_NERA = 2;
@@ -36,9 +38,6 @@ namespace Dama_form
 		public static readonly Image IMG_PEDINA_NERA = Image.FromFile("pedinaDama2.png");
 		public static readonly Image IMG_DAMA_BIANCA = Image.FromFile("pedinaDama3.png");
 		public static readonly Image IMG_DAMA_NERA = Image.FromFile("pedinaDama4.png");
-
-		//public static readonly int DIM_X_FINESTRA;
-		//public static readonly int DIM_Y_FINESTRA;
 
 	}
 }

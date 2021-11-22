@@ -33,7 +33,6 @@ namespace Dama_form
 			vincitore = 0;
 			giocatoreCorrente = K.PEDINA_BIANCA;
 		}
-
 		public void iniziaPartita()
 		{
 			matricePedine = new int[,]
@@ -47,17 +46,6 @@ namespace Dama_form
 				{ K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA   },
 				{ K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA }
 			};
-			//matricePedine = new int[,]
-			//{
-			//	{ K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA   },
-			//	{ K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA   },
-			//	{ K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.PEDINA_NERA,   K.CELLA_VUOTA,   K.PEDINA_NERA,   K.CELLA_VUOTA   },
-			//	{ K.CELLA_VUOTA,   K.PEDINA_BIANCA,   K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA   },
-			//	{ K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.PEDINA_NERA,   K.CELLA_VUOTA,   K.CELLA_VUOTA,   K.CELLA_VUOTA   },
-			//	{ K.CELLA_VUOTA,   K.CELLA_VUOTA, K.CELLA_VUOTA,   K.DAMA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA },
-			//	{ K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA   },
-			//	{ K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA, K.CELLA_VUOTA,   K.PEDINA_BIANCA }
-			//};
 			giocoInCorso = true;
 			obbligoMangiare = false;
 			vincitore = 0;
@@ -467,10 +455,6 @@ namespace Dama_form
 			return tempoTrascorso;
 		}
 
-		public bool getObbligoMangiare()
-		{
-			return obbligoMangiare;
-		}
 	}
 
 	public class EsitoMossa

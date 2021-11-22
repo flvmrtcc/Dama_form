@@ -54,7 +54,7 @@ namespace Dama_form
 			this.titoloGioco.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
 			this.titoloGioco.Cursor = System.Windows.Forms.Cursors.Default;
 			this.titoloGioco.Font = new System.Drawing.Font("Microsoft Sans Serif", 40F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.titoloGioco.Location = new System.Drawing.Point(5, 63);
+			this.titoloGioco.Location = new System.Drawing.Point(20, 63);
 			this.titoloGioco.Name = "titoloGioco";
 			this.titoloGioco.ReadOnly = true;
 			this.titoloGioco.Size = new System.Drawing.Size(920, 76);
@@ -69,7 +69,7 @@ namespace Dama_form
 			this.bottoneGioca.Anchor = System.Windows.Forms.AnchorStyles.Top;
 			this.bottoneGioca.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.bottoneGioca.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.bottoneGioca.Location = new System.Drawing.Point(367, 256);
+			this.bottoneGioca.Location = new System.Drawing.Point(382, 256);
 			this.bottoneGioca.Name = "bottoneGioca";
 			this.bottoneGioca.Size = new System.Drawing.Size(200, 80);
 			this.bottoneGioca.TabIndex = 1;
@@ -86,7 +86,7 @@ namespace Dama_form
             this.toolStripMenuItem1});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(932, 28);
+			this.menuStrip1.Size = new System.Drawing.Size(962, 28);
 			this.menuStrip1.TabIndex = 2;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -152,7 +152,7 @@ namespace Dama_form
 			this.panelSchermataGioca.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panelSchermataGioca.Location = new System.Drawing.Point(0, 28);
 			this.panelSchermataGioca.Name = "panelSchermataGioca";
-			this.panelSchermataGioca.Size = new System.Drawing.Size(932, 625);
+			this.panelSchermataGioca.Size = new System.Drawing.Size(962, 625);
 			this.panelSchermataGioca.TabIndex = 3;
 			// 
 			// FormGioco
@@ -160,12 +160,12 @@ namespace Dama_form
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(213)))), ((int)(((byte)(170)))));
-			this.ClientSize = new System.Drawing.Size(932, 653);
+			this.ClientSize = new System.Drawing.Size(962, 653);
 			this.Controls.Add(this.panelSchermataGioca);
 			this.Controls.Add(this.menuStrip1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuStrip1;
-			this.MinimumSize = new System.Drawing.Size(950, 700);
+			this.MinimumSize = new System.Drawing.Size(980, 700);
 			this.Name = "FormGioco";
 			this.Text = "Dama";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormGioco_FormClosing);

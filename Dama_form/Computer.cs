@@ -18,7 +18,7 @@ namespace Dama_form
 
 		public void trovaEdEseguiMossa()
 		{
-			Thread.Sleep(1000);
+			Thread.Sleep(1000);     // Attende un secondo prima di effettuare la mossa
 			int rNew = 0;
 			int cNew = 0;
 
@@ -29,7 +29,7 @@ namespace Dama_form
 			var rand = new Random();
 			int numPedinaScelto = rand.Next(0, numeroPedineConMosse());
 			int numPedineTrovate = 0;
-			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)	// Trova la mossa casuale scelta
+			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)   // Trova la mossa casuale scelta
 			{
 				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
 				{
@@ -52,7 +52,7 @@ namespace Dama_form
 					}
 				}
 			}
-			
+
 
 			// Sceglie una mossa della pedina a caso
 			int numMossePedinaPossibili = numeroMossePedina(matriceCelleDaEvidenziare);
@@ -77,25 +77,27 @@ namespace Dama_form
 		}
 
 		// TROVA IL NUMERO DI PEDINE CON MOSSE
-		private int numeroPedineConMosse()
+		private int numeroPedineConMosse()      // Conta quante pedine possono muoversi
 		{
+			int[,] matricePedine = giocoDama.getMatricePedine();
 			bool[,] matriceCelleDaEvidenziare = null;
 			int num = 0;
 			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
 			{
 				for (int c = 0; c < K.NUMERO_CELLE_LATO; c++)
 				{
-					matriceCelleDaEvidenziare = giocoDama.getMatriceCelleDaEvidenziare(r, c);
-					if (controllaSePresenteMossa(matriceCelleDaEvidenziare))
+					if (giocoDama.getGiocatoreCorrente() == matricePedine[r, c] || giocoDama.getGiocatoreCorrente() == matricePedine[r, c] - K.VAL_DIFFERENZA_DAME_PEDINE)
 					{
-						num++;
+						matriceCelleDaEvidenziare = giocoDama.getMatriceCelleDaEvidenziare(r, c);
+						if (controllaSePresenteMossa(matriceCelleDaEvidenziare))
+							num++;
 					}
 				}
 			}
 			return num;
 		}
 
-		private bool controllaSePresenteMossa(bool[,] matriceCelleDaEvidenziare)
+		private bool controllaSePresenteMossa(bool[,] matriceCelleDaEvidenziare)    // Controlla se sono disponibili mosse per quella pedina
 		{
 			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
 			{
@@ -107,7 +109,7 @@ namespace Dama_form
 			return false;
 		}
 
-		private int numeroMossePedina(bool[,] matriceCelleDaEvidenziare)
+		private int numeroMossePedina(bool[,] matriceCelleDaEvidenziare)    // Conta quante mosse può fare la pedina
 		{
 			int numeroMosse = 0;
 			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
