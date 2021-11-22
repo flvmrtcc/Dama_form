@@ -289,6 +289,7 @@ namespace Dama_form
 			textBoxTurnoGiocatore.BorderStyle = BorderStyle.FixedSingle;
 			textBoxTurnoGiocatore.ReadOnly = true;
 			textBoxTurnoGiocatore.Multiline = true;
+			textBoxTurnoGiocatore.BackColor = Color.FromArgb(250, 255, 204);
 			textBoxTurnoGiocatore.WordWrap = true;
 			textBoxTurnoGiocatore.Height = 55;
 			textBoxTurnoGiocatore.TextAlign = HorizontalAlignment.Center;
@@ -307,6 +308,7 @@ namespace Dama_form
 			textBoxTempoTrascorso.Name = "textInfoTempoTrascorso";
 			textBoxTempoTrascorso.Dock = DockStyle.Top;
 			textBoxTempoTrascorso.BorderStyle = BorderStyle.FixedSingle;
+			textBoxTempoTrascorso.BackColor = Color.FromArgb(250, 255, 204);
 			textBoxTempoTrascorso.ReadOnly = true;
 			textBoxTempoTrascorso.Multiline = true;
 			textBoxTempoTrascorso.WordWrap = true;
@@ -416,7 +418,7 @@ namespace Dama_form
 				}
 			}
 		}
-		private void cancellaPedine()
+		/*private void cancellaPedine()
 		{
 			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)
 			{
@@ -425,7 +427,7 @@ namespace Dama_form
 					elencoCelle[r, c].Controls.Clear();
 				}
 			}
-		}
+		}*/
 		private void rimuoviPrecedentiEvidenziati()
 		{
 			for (int r = 0; r < K.NUMERO_CELLE_LATO; r++)

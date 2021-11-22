@@ -22,8 +22,8 @@ namespace Dama_form
 		//public static readonly Color COLORE_PANEL_TABELLA = Color.LightGray;
 		//public static readonly Color COLORE_PANEL_TABELLA = Color.AliceBlue;
 		public static readonly Color COLORE_PANEL_TABELLA = Color.FromArgb(225, 223, 180);
-		//public static readonly Color COLORE_PANEL_TURNO = Color.LightGray;
-		public static readonly Color COLORE_PANEL_TURNO = Color.FromArgb(163, 163, 163);
+		//public static readonly Color COLORE_PANEL_TURNO = Color.FromArgb(163, 163, 163);
+		public static readonly Color COLORE_PANEL_TURNO = Color.FromArgb(190, 147, 105);
 
 		public static readonly int PEDINA_BIANCA = 1;
 		public static readonly int PEDINA_NERA = 2;
